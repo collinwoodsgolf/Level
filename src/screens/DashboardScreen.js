@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Main Dashboard
+ * LEVEL GOLF — Main Dashboard
  * Today's dynamic rating, weather, scorecard, factor breakdown, hole-by-hole.
  */
 import React, { useEffect, useState, useCallback } from 'react';
@@ -403,7 +403,7 @@ export default function DashboardScreen({ navigation }) {
     <View style={styles.container}>
       <TopNav
         navigation={navigation}
-        title="ATTESTED"
+        title="LEVEL"
         subtitle={`${MANHATTAN_WOODS.name} · ${MANHATTAN_WOODS.location}`}
       />
 

@@ -1,5 +1,5 @@
 /**
- * Zustand global state store for ATTESTED
+ * Zustand global state store for LEVEL GOLF
  */
 import { create } from 'zustand';
 import { MY_ROUNDS, FRIENDS, computeHandicapIndex, roundDifferential } from './social';

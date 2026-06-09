@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Scorecard
+ * LEVEL GOLF — Scorecard
  * Classic front/back-nine scorecard grid built from static course data,
  * so it ALWAYS renders — no dependency on weather or rating computation.
  * When a dynamic rating is available, an effective-yardage row is added.

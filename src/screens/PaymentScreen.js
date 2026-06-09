@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Payment / Subscription Screen
+ * LEVEL GOLF — Payment / Subscription Screen
  * Stripe-powered checkout for Pro subscriptions
  */
 import React, { useState } from 'react';
@@ -64,7 +64,7 @@ export default function PaymentScreen({ navigation }) {
       setPremium(true);
       Alert.alert(
         'Welcome to Pro!',
-        `Your ${plan.label} subscription is now active. Enjoy full access to ATTESTED.`,
+        `Your ${plan.label} subscription is now active. Enjoy full access to Level Golf.`,
         [{ text: 'Let\'s Go', onPress: () => navigation.goBack() }]
       );
     }, 2000);
@@ -86,8 +86,8 @@ export default function PaymentScreen({ navigation }) {
       <ScrollView style={s.scroll} showsVerticalScrollIndicator={false}>
         {/* Hero */}
         <View style={s.hero}>
-          <Text style={s.heroTitle}>ATTESTED</Text>
-          <Text style={s.heroSub}>Dynamic Course Intelligence</Text>
+          <Text style={s.heroTitle}>LEVEL</Text>
+          <Text style={s.heroSub}>Every round on equal terms</Text>
           <Text style={s.heroDesc}>
             Unlock the full power of real-time course ratings, GPS-verified conditions, and per-hole difficulty analysis.
           </Text>

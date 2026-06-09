@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Login / Sign Up
+ * LEVEL GOLF — Login / Sign Up
  * Apple-clean auth: Sign In, dedicated Sign Up, Forgot Password, Apple Sign In.
  */
 import React, { useState } from 'react';
@@ -168,7 +168,7 @@ export default function LoginScreen({ navigation }) {
           </View>
 
           <Text style={s.footer}>
-            GPS-verified rounds · Live dynamic ratings{'\n'}Handicaps that reflect how the course actually played
+            GPS-attested rounds · Live dynamic ratings{'\n'}Handicaps that reflect how the course actually played
           </Text>
         </ScrollView>
       </KeyboardAvoidingView>

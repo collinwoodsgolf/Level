@@ -1,5 +1,5 @@
 /**
- * ATTESTED Design System — iOS App Theme
+ * LEVEL GOLF Design System — iOS App Theme
  * Light, creme-and-white, hunter green brand, Tiger-Sunday red accents.
  */
 

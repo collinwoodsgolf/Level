@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Geospatial utilities
+ * LEVEL GOLF — Geospatial utilities
  * Crowdsourced pin/tee localization: robust clustering of phone GPS fixes
  * (staff "morning mark" + player fixes throughout the day).
  */

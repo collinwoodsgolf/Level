@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Round History
+ * LEVEL GOLF — Round History
  * Every posted round with the dynamic rating it was played against,
  * its differential, and the resulting handicap index.
  */

@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Self-calibrating rating layer (empirical Bayes)
+ * LEVEL GOLF — Self-calibrating rating layer (empirical Bayes)
  *
  * The physics model predicts a difficulty delta from conditions.
  * Every posted round is also a measurement of TRUE difficulty:

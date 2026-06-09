@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Rating Insights
+ * LEVEL GOLF — Rating Insights
  * Opened by tapping Today's Rating. Charts how every factor moves
  * every hole: per-hole stacked component bars around a zero axis,
  * factor totals, and each hole's delta.

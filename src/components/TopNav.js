@@ -1,5 +1,5 @@
 /**
- * ATTESTED — TopNav
+ * LEVEL GOLF — TopNav
  * Shared header: logo + title on the left, avatar menu on the top right.
  * Menu pages: Account Information, Billing, Settings, Round History, Sign Out.
  */
@@ -46,7 +46,7 @@ export default function TopNav({ navigation, title, subtitle }) {
       <View style={s.left}>
         <Logo size={34} />
         <View style={{ marginLeft: 10 }}>
-          <Text style={s.title}>{title || 'ATTESTED'}</Text>
+          <Text style={s.title}>{title || 'LEVEL'}</Text>
           {!!subtitle && <Text style={s.subtitle}>{subtitle}</Text>}
         </View>
       </View>

@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Billing
+ * LEVEL GOLF — Billing
  * Subscription status, payment method, invoice history.
  */
 import React from 'react';
@@ -28,7 +28,7 @@ export default function BillingScreen({ navigation }) {
         <View style={s.card}>
           <View style={s.planRow}>
             <View style={{ flex: 1 }}>
-              <Text style={s.planName}>{isPremium ? 'ATTESTED Pro' : 'Free Plan'}</Text>
+              <Text style={s.planName}>{isPremium ? 'Level Pro' : 'Free Plan'}</Text>
               <Text style={s.planDesc}>
                 {isPremium
                   ? 'All courses · live ratings · dynamic handicap'

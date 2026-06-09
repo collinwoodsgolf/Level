@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Wagers
+ * LEVEL GOLF — Wagers
  * Peer-to-peer matches: two players lock in against the same dynamic
  * rating snapshot at tee-off, so the terms are attested and indisputable.
  * DraftKings-style verified betting integration is planned (placeholder).

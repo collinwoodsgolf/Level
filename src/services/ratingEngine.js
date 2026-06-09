@@ -1,5 +1,5 @@
 /**
- * ATTESTED Dynamic Rating Engine v2 — Corrected Mathematics
+ * LEVEL GOLF Dynamic Rating Engine v2 — Corrected Mathematics
  *
  * Core model: s_ij = θ_i + D_j + ε_ij
  *   θ_i = player ability

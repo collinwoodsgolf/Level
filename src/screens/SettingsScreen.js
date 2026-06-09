@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Settings
+ * LEVEL GOLF — Settings
  * App preferences, units, notifications, about.
  */
 import React from 'react';
@@ -81,7 +81,7 @@ export default function SettingsScreen({ navigation }) {
             icon="📖" label="How Dynamic Ratings Work"
             onPress={() => Alert.alert(
               'Dynamic Rating',
-              "ATTESTED combines GPS-verified course conditions, live weather, and USGA-calibrated math to compute how hard the course is playing right now — so an 85 on a brutal day counts for what it's worth.",
+              "Level Golf combines GPS-verified course conditions, live weather, and USGA-calibrated math to compute how hard the course is playing right now — so an 85 on a brutal day counts for what it's worth.",
             )}
           />
           <Row
@@ -94,12 +94,12 @@ export default function SettingsScreen({ navigation }) {
           />
           <Row
             icon="💬" label="Contact Support"
-            onPress={() => Alert.alert('Support', 'support@attested.golf')}
+            onPress={() => Alert.alert('Support', 'support@level.golf')}
             last
           />
         </View>
 
-        <Text style={s.version}>ATTESTED v1.0.0 (Build 1)</Text>
+        <Text style={s.version}>LEVEL GOLF v1.0.0 (Build 1)</Text>
       </ScrollView>
     </View>
   );

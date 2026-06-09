@@ -1,5 +1,5 @@
 /**
- * ATTESTED — SubHeader
+ * LEVEL GOLF — SubHeader
  * iOS-style page header with back chevron, used by pushed pages.
  */
 import React from 'react';

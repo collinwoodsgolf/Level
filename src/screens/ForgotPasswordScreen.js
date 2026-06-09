@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Forgot Password
+ * LEVEL GOLF — Forgot Password
  */
 import React, { useState } from 'react';
 import {

@@ -1,5 +1,5 @@
 /**
- * ATTESTED — My Game (Player Insights)
+ * LEVEL GOLF — My Game (Player Insights)
  * How conditions outside your control affect YOUR scoring:
  * strokes gained/lost vs your own baseline in each condition bucket.
  * Sharpens automatically with every attested round.

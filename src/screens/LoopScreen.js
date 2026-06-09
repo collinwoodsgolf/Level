@@ -1,5 +1,5 @@
 /**
- * ATTESTED — The Loop
+ * LEVEL GOLF — The Loop
  * The social clubhouse: follow friends, share rounds, and compare
  * handicaps that are tied to the dynamic course rating — so everyone
  * knows an 82 in 20 mph gusts beats an 80 on a calm morning.

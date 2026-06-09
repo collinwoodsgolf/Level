@@ -69,18 +69,18 @@ async function tryNWS(lat, lon) {
   const timeout = setTimeout(() => controller.abort(), 10000);
   try {
     const pts = await fetch(`https://api.weather.gov/points/${lat},${lon}`, {
-      headers: { 'User-Agent': 'ATTESTED-App' }, signal: controller.signal,
+      headers: { 'User-Agent': 'LevelGolf-App' }, signal: controller.signal,
     });
     if (!pts.ok) throw new Error(`NWS points ${pts.status}`);
     const pj = await pts.json();
     const stnUrl = pj.properties?.observationStations;
     if (!stnUrl) throw new Error('No station URL');
-    const stns = await fetch(stnUrl, { headers: { 'User-Agent': 'ATTESTED-App' }, signal: controller.signal });
+    const stns = await fetch(stnUrl, { headers: { 'User-Agent': 'LevelGolf-App' }, signal: controller.signal });
     const sj = await stns.json();
     const stn = sj.features?.[0]?.properties?.stationIdentifier;
     if (!stn) throw new Error('No station');
     const obs = await fetch(`https://api.weather.gov/stations/${stn}/observations/latest`, {
-      headers: { 'User-Agent': 'ATTESTED-App' }, signal: controller.signal,
+      headers: { 'User-Agent': 'LevelGolf-App' }, signal: controller.signal,
     });
     clearTimeout(timeout);
     if (!obs.ok) throw new Error(`NWS obs ${obs.status}`);

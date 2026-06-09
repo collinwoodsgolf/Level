@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Placeholder Logo
+ * LEVEL GOLF — Placeholder Logo
  * Pure React Native views (no SVG dependency): rounded badge,
  * flagstick + pennant over a putting green arc.
  */
@@ -87,12 +87,17 @@ export default function Logo({ size = 72, wordmark = false, tagline = false }) {
       </View>
 
       {wordmark && (
-        <Text style={[styles.wordmark, { fontSize: size * 0.42, marginTop: size * 0.22 }]}>
-          ATTESTED
-        </Text>
+        <View style={styles.lockup}>
+          <Text style={[styles.wordmark, { fontSize: size * 0.5, marginTop: size * 0.2 }]}>
+            LEVEL
+          </Text>
+          {/* The rule IS a level — brand pun intended */}
+          <View style={[styles.rule, { width: size * 1.55, marginVertical: size * 0.07 }]} />
+          <Text style={[styles.subword, { fontSize: size * 0.22 }]}>GOLF</Text>
+        </View>
       )}
       {tagline && (
-        <Text style={styles.tagline}>Dynamic Course Intelligence</Text>
+        <Text style={styles.tagline}>Every round on equal terms</Text>
       )}
     </View>
   );
@@ -138,10 +143,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     opacity: 0.95,
   },
+  lockup: { alignItems: 'center' },
   wordmark: {
     ...FONTS.black,
     color: COLORS.ink,
-    letterSpacing: 4,
+    letterSpacing: 6,
+  },
+  rule: {
+    height: 2.5,
+    backgroundColor: COLORS.green700,
+    borderRadius: 2,
+  },
+  subword: {
+    ...FONTS.semibold,
+    color: COLORS.gray500,
+    letterSpacing: 8,
   },
   tagline: {
     ...FONTS.medium,

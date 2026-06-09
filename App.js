@@ -1,5 +1,5 @@
 /**
- * ATTESTED — App Root
+ * LEVEL GOLF — App Root
  * Auth gate → Tabs (Ratings, The Loop) with top-right account menu
  * → pushed pages (Account Info, Billing, Settings, Round History) + modals.
  */

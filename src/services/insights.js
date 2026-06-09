@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Player Insights engine
+ * LEVEL GOLF — Player Insights engine
  *
  * Joins a player's hole-by-hole scores with the conditions each hole was
  * rated under, then asks: in which conditions does this player bleed

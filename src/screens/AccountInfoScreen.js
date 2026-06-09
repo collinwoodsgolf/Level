@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Account Information
+ * LEVEL GOLF — Account Information
  * Profile details, editable name, handicap summary.
  */
 import React, { useState } from 'react';

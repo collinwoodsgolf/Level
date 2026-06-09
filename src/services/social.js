@@ -1,5 +1,5 @@
 /**
- * ATTESTED — The Loop (social) + handicap engine
+ * LEVEL GOLF — The Loop (social) + handicap engine
  *
  * Handicaps here are tied to the DYNAMIC course rating: each round's
  * differential is computed against the rating/slope the course was actually

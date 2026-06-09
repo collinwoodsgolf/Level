@@ -1,5 +1,5 @@
 /**
- * ATTESTED — Hole Detail Screen
+ * LEVEL GOLF — Hole Detail Screen
  * Deep-dive breakdown of a single hole's difficulty factors
  */
 import React from 'react';
