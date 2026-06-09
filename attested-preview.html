@@ -85,6 +85,51 @@
   .ninelabel{font-size:7.5px;font-weight:800;letter-spacing:1px;color:var(--t4);margin:6px 0 3px;}
   .cardtitle{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.5px;margin-bottom:4px;}
 
+  .startbar{display:flex;align-items:center;gap:10px;background:var(--hunter);border-radius:12px;padding:10px 13px;color:#fff;}
+  .startbar b{font-size:13px;display:block;}
+  .startbar span{font-size:9px;color:rgba(255,255,255,.8);}
+  .startbar .play{font-size:13px;}
+  .startbar .chevw{font-size:18px;color:rgba(255,255,255,.7);}
+  .taphint{font-size:7px;color:var(--t4);margin-top:4px;}
+  /* insights */
+  .ihead{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px;}
+  .ihead .iv{font-size:24px;font-weight:900;}
+  .ihead .il{font-size:7px;color:var(--t3);font-weight:700;letter-spacing:1px;text-align:center;}
+  .ibadge{border:1px solid rgba(217,88,12,.4);border-radius:99px;padding:4px 9px;font-size:9px;font-weight:700;color:var(--orange);}
+  .lgnd{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0;}
+  .lgnd span{display:flex;align-items:center;gap:4px;background:#F4F1E8;border-radius:99px;padding:3px 7px;font-size:8px;font-weight:600;color:var(--t2);}
+  .lgnd i{width:7px;height:7px;border-radius:50%;display:inline-block;}
+  .hrow{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+  .hrow .hn{font-size:10px;font-weight:800;color:var(--g400);width:16px;}
+  .hrow .hp{font-size:8px;color:var(--t4);width:16px;}
+  .track{flex:1;height:11px;background:#F4F1E8;border-radius:6px;display:flex;overflow:hidden;position:relative;}
+  .track .zero{position:absolute;left:50%;top:0;bottom:0;width:1.5px;background:var(--t4);z-index:2;}
+  .track .nside{width:50%;display:flex;flex-direction:row-reverse;}
+  .track .pside{width:50%;display:flex;}
+  .track b{height:100%;display:block;}
+  .hrow .hd{font-size:9px;font-weight:700;width:32px;text-align:right;}
+  .axl{display:flex;justify-content:space-between;font-size:8px;color:var(--t4);padding:0 36px 3px;}
+  /* wagers */
+  .flabel{font-size:10px;font-weight:600;color:var(--t2);margin:10px 0 6px;}
+  .opps{display:flex;gap:6px;}
+  .opp{width:56px;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:6px 0;}
+  .opp.on{border-color:var(--hunterD);background:#F4F8F4;}
+  .opp .av{width:26px;height:26px;border-radius:50%;background:var(--chip);color:var(--g400);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 3px;}
+  .opp.on .av{background:var(--hunter);color:#fff;}
+  .opp b{font-size:8.5px;display:block;color:var(--ink);}
+  .opp span{font-size:8.5px;color:var(--t3);font-weight:800;}
+  .stakes{display:flex;gap:6px;}
+  .stake{flex:1;text-align:center;border:1.5px solid var(--border);border-radius:9px;padding:7px 0;font-size:11px;font-weight:700;color:var(--t2);}
+  .stake.on{background:var(--hunter);border-color:var(--hunter);color:#fff;}
+  .fmt{display:flex;align-items:center;gap:8px;border:1.5px solid var(--border);border-radius:9px;padding:7px 10px;margin-bottom:5px;font-size:10.5px;font-weight:600;color:var(--ink);}
+  .fmt.on{border-color:var(--hunterD);background:#F4F8F4;}
+  .fmt i{width:12px;height:12px;border-radius:50%;border:2px solid var(--t4);display:inline-block;}
+  .fmt.on i{border-color:var(--hunter);background:var(--hunter);}
+  .fmt em{margin-left:auto;font-style:normal;font-size:9px;color:var(--t3);}
+  .locknote{background:var(--tint);border-radius:9px;padding:7px;text-align:center;font-size:9.5px;color:var(--t2);margin-top:10px;}
+  .dk{display:flex;gap:10px;align-items:center;background:#F4F1E8;border:1px dashed var(--border);border-radius:12px;padding:11px;margin-top:4px;}
+  .dk b{font-size:11px;color:var(--ink);display:block;}
+  .dk span{font-size:8.5px;color:var(--t3);line-height:1.4;}
   /* login */
   .segment{display:flex;background:#fff;border:1px solid var(--border);border-radius:10px;padding:3px;}
   .segment div{flex:1;text-align:center;padding:8px;border-radius:7px;font-size:12px;font-weight:600;color:var(--t2);}
@@ -199,8 +244,9 @@
         <div class="avatar">C</div>
       </div>
       <div class="scroll">
+        <div class="startbar"><span class="play">▶</span><div style="flex:1"><b>Start Round</b><span>Capture &amp; lock today's rating — 76.8 / 146</span></div><span class="chevw">›</span></div>
         <div class="heroRow">
-          <div class="hero" style="border-color:rgba(217,88,12,.35)"><div class="l">TODAY'S RATING</div><div class="v" style="color:var(--orange)">76.8</div><div class="d" style="color:var(--orange)">+1.8 vs static</div><div class="pill">Playing Tough</div></div>
+          <div class="hero" style="border-color:rgba(217,88,12,.35)"><div class="l">TODAY'S RATING</div><div class="v" style="color:var(--orange)">76.8</div><div class="d" style="color:var(--orange)">+1.8 vs static</div><div class="pill">Playing Tough</div><div class="taphint">Tap for factor charts ›</div></div>
           <div class="hero"><div class="l">USGA STATIC</div><div class="v" style="color:var(--t2)">75.0</div><div class="d" style="color:var(--t3)">Slope 141</div></div>
           <div class="hero"><div class="l">TODAY'S SLOPE</div><div class="v" style="color:var(--red)">146</div><div class="d" style="color:var(--red)">+5</div></div>
         </div>
@@ -237,6 +283,7 @@
       <div class="tabbar">
         <div class="tab on"><span class="ic">⛳</span>Ratings</div>
         <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">💰</span>Wagers</div>
       </div>
     </div></div>
     <div class="cap">Dashboard · front 9 + back 9 · wind as compass</div>
@@ -279,6 +326,7 @@
       <div class="tabbar">
         <div class="tab on"><span class="ic">⛳</span>Ratings</div>
         <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">💰</span>Wagers</div>
       </div>
     </div></div>
     <div class="cap">Top-right account menu</div>
@@ -338,6 +386,7 @@
       <div class="tabbar">
         <div class="tab"><span class="ic">⛳</span>Ratings</div>
         <div class="tab on"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">💰</span>Wagers</div>
       </div>
     </div></div>
     <div class="cap">The Loop · social hub</div>
@@ -386,6 +435,68 @@
       </div>
     </div></div>
     <div class="cap">Round history · dynamic differentials</div>
+  </div>
+
+  <!-- RATING INSIGHTS -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="subhead"><span class="back">‹</span><b>Rating Insights</b></div>
+      <div class="scroll">
+        <div class="ihead">
+          <div><div class="iv" style="color:var(--orange)">76.8</div><div class="il">TODAY</div></div>
+          <span style="color:var(--t4);font-size:11px">vs</span>
+          <div><div class="iv" style="color:var(--t2)">75.0</div><div class="il">STATIC</div></div>
+          <div class="ibadge">+1.8 · Playing Tough</div>
+        </div>
+        <div class="card">
+          <div class="cardtitle">PER-HOLE FACTOR IMPACT</div>
+          <div class="lgnd"><span><i style="background:#2563EB"></i>Wind</span><span><i style="background:#7C3AED"></i>X-Wind</span><span><i style="background:#0E7490"></i>Temp</span><span><i style="background:#A16207"></i>Tees</span><span><i style="background:#355E3B"></i>Greens</span><span><i style="background:#0891B2"></i>Rain</span><span><i style="background:#65A30D"></i>Rough</span><span><i style="background:#92400E"></i>Firm</span></div>
+          <div class="axl"><span>easier ←</span><span>→ harder</span></div>
+          <div class="hrow"><span class="hn">1</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:7.5%;background:#2563EB"></b></div><div class="zero"></div><div class="pside"><b style="width:18.4%;background:#0891B2"></b><b style="width:10.3%;background:#7C3AED"></b><b style="width:16.8%;background:#A16207"></b></div></div><span class="hd" style="color:var(--orange)">+0.31</span></div><div class="hrow"><span class="hn">2</span><span class="hp">P5</span><div class="track"><div class="nside"><b style="width:7.7%;background:#7C3AED"></b></div><div class="zero"></div><div class="pside"><b style="width:8.9%;background:#A16207"></b><b style="width:6.0%;background:#2563EB"></b><b style="width:6.1%;background:#65A30D"></b></div></div><span class="hd" style="color:var(--t3)">+0.18</span></div><div class="hrow"><span class="hn">3</span><span class="hp">P3</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:5.7%;background:#2563EB"></b><b style="width:8.9%;background:#355E3B"></b><b style="width:3.9%;background:#65A30D"></b></div></div><span class="hd" style="color:var(--t3)">+0.12</span></div><div class="hrow"><span class="hn">4</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:28.3%;background:#355E3B"></b><b style="width:29.0%;background:#A16207"></b><b style="width:28.7%;background:#7C3AED"></b></div></div><span class="hd" style="color:var(--orange)">+0.52</span></div><div class="hrow"><span class="hn">5</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:2.8%;background:#7C3AED"></b><b style="width:2.1%;background:#355E3B"></b></div><div class="zero"></div><div class="pside"><b style="width:4.2%;background:#7C3AED"></b></div></div><span class="hd" style="color:var(--g500)">−0.04</span></div><div class="hrow"><span class="hn">6</span><span class="hp">P5</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:15.0%;background:#7C3AED"></b><b style="width:13.6%;background:#355E3B"></b><b style="width:14.0%;background:#2563EB"></b></div></div><span class="hd" style="color:var(--t3)">+0.26</span></div><div class="hrow"><span class="hn">7</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:20.4%;background:#92400E"></b><b style="width:18.1%;background:#355E3B"></b><b style="width:16.8%;background:#A16207"></b></div></div><span class="hd" style="color:var(--orange)">+0.44</span></div><div class="hrow"><span class="hn">8</span><span class="hp">P3</span><div class="track"><div class="nside"><b style="width:2.7%;background:#7C3AED"></b></div><div class="zero"></div><div class="pside"><b style="width:8.0%;background:#7C3AED"></b><b style="width:10.4%;background:#355E3B"></b><b style="width:9.4%;background:#0E7490"></b></div></div><span class="hd" style="color:var(--t3)">+0.15</span></div><div class="hrow"><span class="hn">9</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:6.3%;background:#65A30D"></b><b style="width:4.1%;background:#7C3AED"></b></div><div class="zero"></div><div class="pside"><b style="width:3.7%;background:#92400E"></b></div></div><span class="hd" style="color:var(--g500)">−0.08</span></div><div class="hrow"><span class="hn">10</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:19.5%;background:#7C3AED"></b><b style="width:24.3%;background:#65A30D"></b><b style="width:15.4%;background:#355E3B"></b></div></div><span class="hd" style="color:var(--orange)">+0.35</span></div><div class="hrow"><span class="hn">11</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:3.3%;background:#92400E"></b><b style="width:3.4%;background:#355E3B"></b><b style="width:4.2%;background:#A16207"></b></div></div><span class="hd" style="color:var(--t3)">+0.10</span></div><div class="hrow"><span class="hn">12</span><span class="hp">P3</span><div class="track"><div class="nside"><b style="width:1.6%;background:#7C3AED"></b><b style="width:1.2%;background:#2563EB"></b></div><div class="zero"></div><div class="pside"><b style="width:3.1%;background:#92400E"></b></div></div><span class="hd" style="color:var(--g500)">−0.02</span></div><div class="hrow"><span class="hn">13</span><span class="hp">P5</span><div class="track"><div class="nside"><b style="width:3.3%;background:#2563EB"></b></div><div class="zero"></div><div class="pside"><b style="width:9.0%;background:#65A30D"></b><b style="width:14.7%;background:#0891B2"></b><b style="width:10.9%;background:#0E7490"></b></div></div><span class="hd" style="color:var(--t3)">+0.29</span></div><div class="hrow"><span class="hn">14</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:4.4%;background:#92400E"></b></div><div class="zero"></div><div class="pside"><b style="width:20.2%;background:#355E3B"></b><b style="width:23.3%;background:#7C3AED"></b><b style="width:33.9%;background:#0891B2"></b></div></div><span class="hd" style="color:var(--orange)">+0.49</span></div><div class="hrow"><span class="hn">15</span><span class="hp">P5</span><div class="track"><div class="nside"><b style="width:7.7%;background:#65A30D"></b></div><div class="zero"></div><div class="pside"><b style="width:5.5%;background:#355E3B"></b><b style="width:3.4%;background:#7C3AED"></b><b style="width:3.9%;background:#A16207"></b></div></div><span class="hd" style="color:var(--t3)">+0.08</span></div><div class="hrow"><span class="hn">16</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:8.1%;background:#0E7490"></b><b style="width:13.1%;background:#2563EB"></b><b style="width:6.7%;background:#7C3AED"></b></div></div><span class="hd" style="color:var(--t3)">+0.22</span></div><div class="hrow"><span class="hn">17</span><span class="hp">P3</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:1.8%;background:#0E7490"></b><b style="width:2.9%;background:#92400E"></b><b style="width:2.8%;background:#65A30D"></b></div></div><span class="hd" style="color:var(--t3)">+0.06</span></div><div class="hrow"><span class="hn">18</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:4.4%;background:#65A30D"></b></div><div class="zero"></div><div class="pside"><b style="width:13.8%;background:#0E7490"></b><b style="width:11.3%;background:#0891B2"></b><b style="width:12.0%;background:#355E3B"></b></div></div><span class="hd" style="color:var(--t3)">+0.19</span></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="cap">Rating insights · tap the rating to open</div>
+  </div>
+
+  <!-- WAGERS -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="topnav">
+        <div class="logoBadge mini"><span class="tick">✓</span><span class="green"></span><span class="stick"></span><span class="flag"></span></div>
+        <div class="t"><b>WAGERS</b><span>Attested peer-to-peer matches</span></div>
+        <div class="avatar">C</div>
+      </div>
+      <div class="scroll">
+        <div class="card">
+          <div class="cardtitle">NEW MATCH</div>
+          <div class="flabel">Opponent</div>
+          <div class="opps">
+            <div class="opp on"><div class="av">MC</div><b>Marcus</b><span>4.2</span></div>
+            <div class="opp"><div class="av">SR</div><b>Sofia</b><span>11.8</span></div>
+            <div class="opp"><div class="av">JW</div><b>Jake</b><span>7.5</span></div>
+            <div class="opp"><div class="av">TO</div><b>Tom</b><span>2.9</span></div>
+          </div>
+          <div class="flabel">Stake</div>
+          <div class="stakes"><div class="stake">$5</div><div class="stake on">$10</div><div class="stake">$20</div><div class="stake">$50</div></div>
+          <div class="flabel">Format</div>
+          <div class="fmt on"><i></i>Net Stroke Play<em>Dynamic handicaps applied</em></div>
+          <div class="fmt"><i></i>Match Play<em>Hole by hole</em></div>
+          <div class="fmt"><i></i>Skins<em>Carry-overs</em></div>
+          <div class="locknote">🔒 Locks today's rating: <b style="color:var(--g400)">76.8 / 146</b></div>
+          <div class="btn green" style="margin-top:9px;font-size:12px;">Start Match — Both Players Tap In</div>
+        </div>
+        <div class="dk"><span style="font-size:20px">🛡️</span><div><b>Verified Betting — Coming Soon</b><span>Planned sportsbook integration (e.g. DraftKings) for escrowed, verifiable wagers backed by GPS-attested scores and locked dynamic ratings.</span></div></div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><span class="ic">⛳</span>Ratings</div>
+        <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab on"><span class="ic">💰</span>Wagers</div>
+      </div>
+    </div></div>
+    <div class="cap">Wagers · locked-rating matches</div>
   </div>
 
 </div>
