@@ -109,6 +109,23 @@
   .track b{height:100%;display:block;}
   .hrow .hd{font-size:9px;font-weight:700;width:32px;text-align:right;}
   .axl{display:flex;justify-content:space-between;font-size:8px;color:var(--t4);padding:0 36px 3px;}
+  /* my game */
+  .mgcard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 11px;}
+  .mgcard.weak{border-left:3px solid var(--red);}
+  .mgcard.strong{border-left:3px solid var(--g500);}
+  .mgtop{display:flex;align-items:center;gap:8px;}
+  .mgtop .ic2{font-size:15px;}
+  .mgtop b{font-size:10.5px;display:block;color:var(--ink);}
+  .mgtop span{font-size:8px;color:var(--t3);}
+  .mgeff{margin-left:auto;text-align:right;}
+  .mgeff b{font-size:15px;font-weight:900;display:block;}
+  .mgeff span{font-size:7px;color:var(--t3);}
+  .mgbar{height:5px;background:#F4F1E8;border-radius:3px;overflow:hidden;margin-top:7px;}
+  .mgbar i{display:block;height:100%;border-radius:3px;}
+  .mgfoot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:8px;}
+  .mgdots{display:flex;gap:2px;align-items:center;color:var(--t3);}
+  .mgdots i{width:4px;height:4px;border-radius:50%;background:#E9E4D6;display:inline-block;}
+  .mgdots i.on{background:var(--g500);}
   /* wagers */
   .flabel{font-size:10px;font-weight:600;color:var(--t2);margin:10px 0 6px;}
   .opps{display:flex;gap:6px;}
@@ -283,6 +300,7 @@
       <div class="tabbar">
         <div class="tab on"><span class="ic">⛳</span>Ratings</div>
         <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">📊</span>My Game</div>
         <div class="tab"><span class="ic">💰</span>Wagers</div>
       </div>
     </div></div>
@@ -326,6 +344,7 @@
       <div class="tabbar">
         <div class="tab on"><span class="ic">⛳</span>Ratings</div>
         <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">📊</span>My Game</div>
         <div class="tab"><span class="ic">💰</span>Wagers</div>
       </div>
     </div></div>
@@ -386,6 +405,7 @@
       <div class="tabbar">
         <div class="tab"><span class="ic">⛳</span>Ratings</div>
         <div class="tab on"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">📊</span>My Game</div>
         <div class="tab"><span class="ic">💰</span>Wagers</div>
       </div>
     </div></div>
@@ -460,6 +480,51 @@
     <div class="cap">Rating insights · tap the rating to open</div>
   </div>
 
+  <!-- MY GAME -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="topnav">
+        <div class="logoBadge mini"><span class="tick">✓</span><span class="green"></span><span class="stick"></span><span class="flag"></span></div>
+        <div class="t"><b>MY GAME</b><span>How conditions shape your scoring</span></div>
+        <div class="avatar">C</div>
+      </div>
+      <div class="scroll">
+        <div class="youcard"><div class="l"><b>BIGGEST LEAK</b><span style="display:block;font-size:9.5px;color:var(--ink);margin-top:3px;line-height:1.45">You lose 0.33 strokes per hole in left-to-right crosswinds — about 5.9 per round vs your baseline.</span><span style="display:block;font-size:8px;margin-top:4px">💡 Favor a draw or aim further left to ride L→R wind.</span></div></div>
+        <div class="sumstrip">
+          <div><b>8</b><span>ROUNDS</span></div>
+          <div><b>144</b><span>HOLES</span></div>
+          <div><b>+0.6</b><span>BASELINE/HOLE</span></div>
+          <div><b>5</b><span>SIGNALS</span></div>
+        </div>
+        <div class="seclabel">COSTING YOU STROKES</div>
+        <div class="mgcard weak">
+          <div class="mgtop"><span class="ic2">🌬️</span><div><b>Left-to-right crosswinds</b><span>38 holes observed</span></div><div class="mgeff"><b style="color:var(--red)">+0.33</b><span>strokes/hole</span></div></div>
+          <div class="mgbar"><i style="width:55%;background:var(--red)"></i></div>
+          <div class="mgfoot"><span style="color:var(--red);font-weight:600">≈ 5.9 strokes/round lost</span><span class="mgdots"><i class="on"></i><i class="on"></i><i class="on"></i>&nbsp;high confidence</span></div>
+        </div>
+        <div class="mgcard weak">
+          <div class="mgtop"><span class="ic2">⛳</span><div><b>Pins on 3%+ slope</b><span>44 holes observed</span></div><div class="mgeff"><b style="color:var(--red)">+0.28</b><span>strokes/hole</span></div></div>
+          <div class="mgbar"><i style="width:47%;background:var(--red)"></i></div>
+          <div class="mgfoot"><span style="color:var(--red);font-weight:600">≈ 5.0 strokes/round lost</span><span class="mgdots"><i class="on"></i><i class="on"></i><i class="on"></i>&nbsp;high confidence</span></div>
+        </div>
+        <div class="seclabel">WHERE YOU SHINE</div>
+        <div class="mgcard strong">
+          <div class="mgtop"><span class="ic2">🍃</span><div><b>Tailwind holes</b><span>29 holes observed</span></div><div class="mgeff"><b style="color:var(--g500)">−0.17</b><span>strokes/hole</span></div></div>
+          <div class="mgbar"><i style="width:28%;background:var(--g500)"></i></div>
+          <div class="mgfoot"><span style="color:var(--g500);font-weight:600">≈ 3.1 strokes/round gained</span><span class="mgdots"><i class="on"></i><i class="on"></i><i></i>&nbsp;medium confidence</span></div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><span class="ic">⛳</span>Ratings</div>
+        <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab on"><span class="ic">📊</span>My Game</div>
+        <div class="tab"><span class="ic">💰</span>Wagers</div>
+      </div>
+    </div></div>
+    <div class="cap">My Game · condition insights</div>
+  </div>
+
   <!-- WAGERS -->
   <div>
     <div class="phone"><div class="screen">
@@ -493,6 +558,7 @@
       <div class="tabbar">
         <div class="tab"><span class="ic">⛳</span>Ratings</div>
         <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">📊</span>My Game</div>
         <div class="tab on"><span class="ic">💰</span>Wagers</div>
       </div>
     </div></div>
