@@ -26,6 +26,75 @@ export const useStore = create((set, get) => ({
   }),
   getHandicap: () => computeHandicapIndex(get().rounds),
 
+  // Active round — rating snapshot is LOCKED at tee-off and governs the
+  // whole round (handicap + wager terms are known before the first swing).
+  activeRound: null,
+  startRound: () => {
+    const { rating, selectedTeeBox, weather } = get();
+    if (!rating) return null;
+    const snapshot = {
+      id: 'live_' + Date.now(),
+      startedAt: new Date().toISOString(),
+      teeBox: selectedTeeBox,
+      dynamicRating: rating.today_rating,
+      dynamicSlope: rating.today_slope,
+      staticRating: rating.usga_static_rating,
+      staticSlope: rating.usga_static_slope,
+      difficultyLabel: rating.difficulty_label,
+      weatherSummary: weather
+        ? `${Math.round(weather.temperature_f)}°F · ${Math.round(weather.wind_speed_mph)} mph wind`
+        : 'Conditions unavailable',
+      locked: true,
+    };
+    set({ activeRound: snapshot });
+    return snapshot;
+  },
+  endRound: (score) => {
+    const { activeRound } = get();
+    if (!activeRound || !score) return null;
+    const round = {
+      id: 'r_' + Date.now(),
+      date: new Date().toISOString().slice(0, 10),
+      course: 'Manhattan Woods GC',
+      tee: activeRound.teeBox.charAt(0).toUpperCase() + activeRound.teeBox.slice(1),
+      score: Number(score),
+      dynamicRating: activeRound.dynamicRating,
+      dynamicSlope: activeRound.dynamicSlope,
+      staticRating: activeRound.staticRating,
+      staticSlope: activeRound.staticSlope,
+      weather: activeRound.weatherSummary,
+      attested: true,
+      differential: roundDifferential(Number(score), activeRound.dynamicRating, activeRound.dynamicSlope),
+    };
+    set(state => ({ rounds: [round, ...state.rounds], activeRound: null }));
+    return round;
+  },
+  cancelRound: () => set({ activeRound: null }),
+
+  // Peer-to-peer wagers (mock — DraftKings integration planned)
+  wagers: [],
+  createWager: ({ opponent, stake, format }) => {
+    const { rating, selectedTeeBox } = get();
+    if (!rating) return null;
+    const wager = {
+      id: 'w_' + Date.now(),
+      createdAt: new Date().toISOString(),
+      opponent,
+      stake,
+      format,
+      teeBox: selectedTeeBox,
+      lockedRating: rating.today_rating,
+      lockedSlope: rating.today_slope,
+      status: 'active', // active | settled
+      result: null,
+    };
+    set(state => ({ wagers: [wager, ...state.wagers] }));
+    return wager;
+  },
+  settleWager: (id, result) => set(state => ({
+    wagers: state.wagers.map(w => w.id === id ? { ...w, status: 'settled', result } : w),
+  })),
+
   // Friends / The Loop
   friends: FRIENDS,
   bumped: {}, // postId -> true

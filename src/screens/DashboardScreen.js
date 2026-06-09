@@ -5,7 +5,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  RefreshControl, ActivityIndicator,
+  RefreshControl, ActivityIndicator, Alert, Platform,
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, getDifficultyColor, getDifficultyBg } from '../utils/theme';
 import { useStore, SETUP_PRESETS } from '../services/store';
@@ -61,7 +61,7 @@ function WeatherStat({ value, label }) {
   );
 }
 
-function RatingHero({ rating }) {
+function RatingHero({ rating, onRatingPress }) {
   if (!rating) {
     return (
       <View style={[styles.card, styles.centerCard]}>
@@ -73,7 +73,11 @@ function RatingHero({ rating }) {
   const dc = getDifficultyColor(rating.rating_delta);
   return (
     <View style={styles.heroRow}>
-      <View style={[styles.heroCard, { borderColor: dc + '33' }]}>
+      <TouchableOpacity
+        style={[styles.heroCard, { borderColor: dc + '33' }]}
+        onPress={onRatingPress}
+        activeOpacity={0.7}
+      >
         <Text style={styles.heroLabel}>TODAY'S RATING</Text>
         <Text style={[styles.heroValue, { color: dc }]}>{rating.today_rating}</Text>
         <Text style={[styles.heroDelta, { color: dc }]}>
@@ -82,7 +86,8 @@ function RatingHero({ rating }) {
         <View style={[styles.diffBadge, { backgroundColor: getDifficultyBg(rating.rating_delta), borderColor: dc + '44' }]}>
           <Text style={[styles.diffBadgeText, { color: dc }]}>{rating.difficulty_label}</Text>
         </View>
-      </View>
+        <Text style={styles.heroTapHint}>Tap for factor charts ›</Text>
+      </TouchableOpacity>
       <View style={styles.heroCard}>
         <Text style={styles.heroLabel}>USGA STATIC</Text>
         <Text style={[styles.heroValue, { color: COLORS.gray400 }]}>{rating.usga_static_rating}</Text>
@@ -98,6 +103,58 @@ function RatingHero({ rating }) {
         </Text>
       </View>
     </View>
+  );
+}
+
+/**
+ * Start / active round banner.
+ * The rating snapshot LOCKS at tee-off — terms are known before the first
+ * swing (handicap + wager integrity), instead of drifting mid-round.
+ */
+function RoundBanner({ rating, activeRound, onStart, onEnd, onCancel }) {
+  if (activeRound) {
+    const t = new Date(activeRound.startedAt);
+    const hhmm = t.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    return (
+      <View style={styles.roundActive}>
+        <View style={{ flex: 1 }}>
+          <View style={styles.roundLiveRow}>
+            <View style={styles.liveDotRed} />
+            <Text style={styles.roundLiveText}>ROUND IN PROGRESS · teed off {hhmm}</Text>
+          </View>
+          <Text style={styles.roundLocked}>
+            🔒 Locked at {activeRound.dynamicRating} / {activeRound.dynamicSlope} · {activeRound.weatherSummary}
+          </Text>
+        </View>
+        <View style={styles.roundBtnCol}>
+          <TouchableOpacity style={styles.endBtn} onPress={onEnd} activeOpacity={0.85}>
+            <Text style={styles.endBtnText}>End Round</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onCancel} hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}>
+            <Text style={styles.cancelText}>Discard</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+  return (
+    <TouchableOpacity
+      style={[styles.startRoundBtn, !rating && { opacity: 0.5 }]}
+      onPress={onStart}
+      disabled={!rating}
+      activeOpacity={0.85}
+    >
+      <Text style={styles.startRoundIcon}>▶</Text>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.startRoundTitle}>Start Round</Text>
+        <Text style={styles.startRoundSub}>
+          {rating
+            ? `Capture & lock today's rating — ${rating.today_rating} / ${rating.today_slope}`
+            : 'Waiting for today\'s rating…'}
+        </Text>
+      </View>
+      <Text style={styles.startRoundChev}>›</Text>
+    </TouchableOpacity>
   );
 }
 
@@ -231,6 +288,10 @@ export default function DashboardScreen({ navigation }) {
   const setTeeBox = useStore(s => s.setSelectedTeeBox);
   const setup = useStore(s => s.setup);
   const applyPreset = useStore(s => s.applyPreset);
+  const activeRound = useStore(s => s.activeRound);
+  const startRound = useStore(s => s.startRound);
+  const endRound = useStore(s => s.endRound);
+  const cancelRound = useStore(s => s.cancelRound);
   const [activePreset, setActivePreset] = useState('daily_play');
   const [refreshing, setRefreshing] = useState(false);
 
@@ -284,6 +345,60 @@ export default function DashboardScreen({ navigation }) {
 
   const teeInfo = MANHATTAN_WOODS.tee_boxes[teeBox];
 
+  const handleStartRound = () => {
+    if (!rating) return;
+    Alert.alert(
+      'Start Round?',
+      `This captures and locks today's rating at ${rating.today_rating} / ${rating.today_slope} for your entire round — it won't drift with the weather.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Lock It In', onPress: () => startRound() },
+      ],
+    );
+  };
+
+  const handleEndRound = () => {
+    if (Platform.OS === 'ios') {
+      Alert.prompt(
+        'End Round',
+        `Enter your gross score. Your differential is computed against the locked rating (${activeRound.dynamicRating} / ${activeRound.dynamicSlope}).`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Post Score',
+            onPress: (score) => {
+              const n = parseInt(score, 10);
+              if (!n || n < 50 || n > 160) {
+                Alert.alert('Invalid Score', 'Enter a score between 50 and 160.');
+                return;
+              }
+              const round = endRound(n);
+              if (round) {
+                Alert.alert(
+                  'Round Attested ✓',
+                  `Score ${round.score} vs locked rating ${round.dynamicRating}\nDifferential: ${round.differential > 0 ? '+' : ''}${round.differential}\n\nSaved to Round History.`,
+                );
+              }
+            },
+          },
+        ],
+        'plain-text',
+        '',
+        'number-pad',
+      );
+    } else {
+      // Android fallback (Alert.prompt is iOS-only)
+      endRound(85);
+    }
+  };
+
+  const handleCancelRound = () => {
+    Alert.alert('Discard Round?', 'The locked snapshot will be thrown away and nothing is posted.', [
+      { text: 'Keep Playing', style: 'cancel' },
+      { text: 'Discard', style: 'destructive', onPress: cancelRound },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
       <TopNav
@@ -298,8 +413,20 @@ export default function DashboardScreen({ navigation }) {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.green500} />}
         showsVerticalScrollIndicator={false}
       >
-        {/* Rating Hero — the headline number first */}
-        <RatingHero rating={rating} />
+        {/* Start / active round */}
+        <RoundBanner
+          rating={rating}
+          activeRound={activeRound}
+          onStart={handleStartRound}
+          onEnd={handleEndRound}
+          onCancel={handleCancelRound}
+        />
+
+        {/* Rating Hero — the headline number first; tap rating for charts */}
+        <RatingHero
+          rating={rating}
+          onRatingPress={() => navigation?.navigate('RatingInsights')}
+        />
 
         {/* Weather */}
         <WeatherCard weather={weather} onRefresh={loadWeather} />
@@ -405,6 +532,36 @@ const styles = StyleSheet.create({
   heroSub: { ...FONTS.regular, fontSize: 11, color: COLORS.gray500, marginTop: 4 },
   diffBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: RADIUS.full, borderWidth: 1, marginTop: 6 },
   diffBadgeText: { ...FONTS.bold, fontSize: 10 },
+  heroTapHint: { ...FONTS.regular, fontSize: 8.5, color: COLORS.gray600, marginTop: 6 },
+
+  // Start / active round banner
+  startRoundBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    backgroundColor: COLORS.green700, borderRadius: RADIUS.lg,
+    paddingVertical: 14, paddingHorizontal: SPACING.lg,
+  },
+  startRoundIcon: { fontSize: 16, color: COLORS.white },
+  startRoundTitle: { ...FONTS.bold, fontSize: 16, color: COLORS.white },
+  startRoundSub: { ...FONTS.regular, fontSize: 11, color: 'rgba(255,255,255,0.8)', marginTop: 2 },
+  startRoundChev: { fontSize: 22, color: 'rgba(255,255,255,0.7)' },
+
+  roundActive: {
+    flexDirection: 'row', alignItems: 'center', gap: 10,
+    backgroundColor: '#E7F0E8', borderRadius: RADIUS.lg,
+    borderWidth: 1.5, borderColor: COLORS.green600 + '66',
+    padding: SPACING.lg,
+  },
+  roundLiveRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  liveDotRed: { width: 8, height: 8, borderRadius: 4, backgroundColor: COLORS.red500 },
+  roundLiveText: { ...FONTS.bold, fontSize: 10, color: COLORS.green400, letterSpacing: 0.5 },
+  roundLocked: { ...FONTS.regular, fontSize: 11, color: COLORS.gray400, marginTop: 5, lineHeight: 15 },
+  roundBtnCol: { alignItems: 'center', gap: 6 },
+  endBtn: {
+    backgroundColor: COLORS.green700, borderRadius: RADIUS.md,
+    paddingVertical: 9, paddingHorizontal: 14,
+  },
+  endBtnText: { ...FONTS.bold, fontSize: 13, color: COLORS.white },
+  cancelText: { ...FONTS.regular, fontSize: 11, color: COLORS.red500 },
 
   // Cards
   card: {

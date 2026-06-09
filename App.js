@@ -18,6 +18,8 @@ import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
 import HoleDetailScreen from './src/screens/HoleDetailScreen';
 import LoopScreen from './src/screens/LoopScreen';
+import WagersScreen from './src/screens/WagersScreen';
+import RatingInsightsScreen from './src/screens/RatingInsightsScreen';
 import AccountInfoScreen from './src/screens/AccountInfoScreen';
 import BillingScreen from './src/screens/BillingScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
@@ -81,6 +83,14 @@ function MainTabs() {
           tabBarIcon: () => <TabIcon glyph="🤝" />,
         }}
       />
+      <Tab.Screen
+        name="Wagers"
+        component={WagersScreen}
+        options={{
+          tabBarLabel: 'Wagers',
+          tabBarIcon: () => <TabIcon glyph="💰" />,
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -119,6 +129,7 @@ export default function App() {
               <Stack.Screen name="Billing" component={BillingScreen} />
               <Stack.Screen name="Settings" component={SettingsScreen} />
               <Stack.Screen name="RoundHistory" component={RoundHistoryScreen} />
+              <Stack.Screen name="RatingInsights" component={RatingInsightsScreen} />
               <Stack.Screen
                 name="Payment"
                 component={PaymentScreen}
