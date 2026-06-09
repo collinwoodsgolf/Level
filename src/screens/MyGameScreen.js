@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS } from '../utils/theme';
 import { analyzePlayer, insightSentence, generateMockHistory } from '../services/insights';
+import { useStore } from '../services/store';
 import TopNav from '../components/TopNav';
 
 function ConfidenceDots({ level }) {
@@ -61,7 +62,12 @@ function InsightCard({ ins }) {
 }
 
 export default function MyGameScreen({ navigation }) {
-  const analysis = useMemo(() => analyzePlayer(generateMockHistory()), []);
+  const user = useStore(st => st.user);
+  const handedness = user?.handedness || 'right';
+  const analysis = useMemo(
+    () => analyzePlayer(generateMockHistory(), { handedness }),
+    [handedness],
+  );
   const weaknesses = analysis.insights.filter(i => i.kind === 'weakness');
   const strengths = analysis.insights.filter(i => i.kind === 'strength');
   const top = analysis.insights[0];
@@ -128,6 +134,8 @@ export default function MyGameScreen({ navigation }) {
           Effects are measured against YOUR baseline after removing each hole's
           conditions-adjusted difficulty — so this isolates how the elements,
           not the architecture, move your score. Every attested round sharpens it.
+          {'\n'}Wind directions oriented for a {handedness === 'left' ? 'left' : 'right'}-handed
+          player — change in Account → Player Information.
         </Text>
       </ScrollView>
     </View>

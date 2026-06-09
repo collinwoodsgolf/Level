@@ -23,16 +23,31 @@ const SHRINK_K = 10;
 // Condition buckets. Each extracts exposure from a hole record:
 // { par, score, conds: { crosswind_lr, headwind, pin_slope_pct, stimp,
 //   rough_in, temp_f, precipitation, difficulty_delta } }
-export const BUCKETS = [
+//
+// Wind buckets are HANDEDNESS-AWARE (set in Account → Player Information):
+// a left-to-right wind is a righty's fade side but a lefty's draw side, so
+// the labels and tips flip. TODO: same treatment for putt break direction
+// once green-contour putt data exists.
+export function buildBuckets(handedness = 'right') {
+  const righty = handedness !== 'left';
+  const fadeTip = righty
+    ? 'Wind pushes toward your fade side — favor a draw or aim further left and let it ride.'
+    : 'Wind pushes toward your fade side — favor a draw or aim further right and let it ride.';
+  const drawTip = righty
+    ? 'Wind helps your natural shot — start it right and let it feed back.'
+    : 'Wind helps your natural shot — start it left and let it feed back.';
+  return [
   {
-    key: 'xwind_lr', icon: '🌬️', label: 'Left-to-right crosswinds',
+    key: 'xwind_lr', icon: '🌬️',
+    label: `Left-to-right crosswinds (your ${righty ? 'fade' : 'draw'} side)`,
     test: h => h.conds.crosswind_lr >= 7,
-    tip: 'Favor a draw or aim further left to ride L→R wind instead of fighting it.',
+    tip: righty ? fadeTip : drawTip,
   },
   {
-    key: 'xwind_rl', icon: '🌬️', label: 'Right-to-left crosswinds',
+    key: 'xwind_rl', icon: '🌬️',
+    label: `Right-to-left crosswinds (your ${righty ? 'draw' : 'fade'} side)`,
     test: h => h.conds.crosswind_lr <= -7,
-    tip: 'Start the ball right and let R→L wind work it back.',
+    tip: righty ? drawTip : fadeTip,
   },
   {
     key: 'headwind', icon: '💨', label: 'Strong headwinds (10+ mph)',
@@ -69,7 +84,11 @@ export const BUCKETS = [
     test: h => h.conds.precipitation && h.conds.precipitation !== 'none',
     tip: 'Play for almost no roll-out and take more club off the tee.',
   },
-];
+  ];
+}
+
+// Default buckets (right-handed) for backward compatibility
+export const BUCKETS = buildBuckets('right');
 
 /** Per-hole residual vs the player's own expectation */
 function residual(h) {
@@ -83,15 +102,16 @@ function residual(h) {
  * Returns { baseline, totalHoles, rounds, insights: [...] } where each
  * insight = { key, icon, label, effect, n, se, confidence, kind, tip }
  */
-export function analyzePlayer(holeRecords) {
+export function analyzePlayer(holeRecords, { handedness = 'right' } = {}) {
   if (!holeRecords || holeRecords.length < 18) {
     return { baseline: null, totalHoles: holeRecords?.length || 0, insights: [], needMore: true };
   }
   const residuals = holeRecords.map(residual);
   const baseline = residuals.reduce((s, v) => s + v, 0) / residuals.length;
 
+  const buckets = buildBuckets(handedness);
   const insights = [];
-  for (const b of BUCKETS) {
+  for (const b of buckets) {
     const inB = holeRecords.filter(b.test);
     if (inB.length < MIN_N) continue;
     const rs = inB.map(residual);
