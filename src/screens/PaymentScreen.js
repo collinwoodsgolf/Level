@@ -193,7 +193,7 @@ const s = StyleSheet.create({
   },
   closeBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
   closeText: { ...FONTS.regular, fontSize: 20, color: COLORS.gray400 },
-  headerTitle: { ...FONTS.bold, fontSize: 20, color: COLORS.white },
+  headerTitle: { ...FONTS.bold, fontSize: 20, color: COLORS.ink },
 
   scroll: { flex: 1 },
 
@@ -217,10 +217,10 @@ const s = StyleSheet.create({
   },
   popularText: { ...FONTS.bold, fontSize: 10, color: COLORS.white, letterSpacing: 1 },
   planLabel: { ...FONTS.semibold, fontSize: 14, color: COLORS.gray400, marginTop: 8 },
-  planLabelActive: { color: COLORS.white },
+  planLabelActive: { color: COLORS.ink },
   planPriceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: 8 },
   planPrice: { ...FONTS.bold, fontSize: 28, color: COLORS.gray300 },
-  planPriceActive: { color: COLORS.white },
+  planPriceActive: { color: COLORS.ink },
   planPeriod: { ...FONTS.regular, fontSize: 14, color: COLORS.gray500, marginLeft: 2 },
   planMonthly: { ...FONTS.regular, fontSize: 12, color: COLORS.gray500, marginTop: 4 },
   savingsBadge: {
@@ -230,7 +230,7 @@ const s = StyleSheet.create({
   savingsText: { ...FONTS.bold, fontSize: 11, color: COLORS.green400 },
 
   featuresSection: { marginTop: 32, paddingHorizontal: SPACING.xxl },
-  featuresTitle: { ...FONTS.bold, fontSize: 18, color: COLORS.white, marginBottom: 16 },
+  featuresTitle: { ...FONTS.bold, fontSize: 18, color: COLORS.ink, marginBottom: 16 },
   featureRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
   featureIcon: { fontSize: 18, marginRight: 14, width: 24, textAlign: 'center' },
   featureText: { ...FONTS.regular, fontSize: 15, color: COLORS.gray300, flex: 1 },

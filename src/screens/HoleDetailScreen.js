@@ -251,7 +251,7 @@ const cs = StyleSheet.create({
   },
   backBtn: { paddingVertical: 4, paddingRight: 12 },
   backText: { ...FONTS.semibold, fontSize: 16, color: COLORS.green500 },
-  headerTitle: { ...FONTS.bold, fontSize: 22, color: COLORS.white },
+  headerTitle: { ...FONTS.bold, fontSize: 22, color: COLORS.ink },
   headerBadge: { paddingVertical: 4, paddingLeft: 12 },
   headerPar: { ...FONTS.semibold, fontSize: 16 },
 
@@ -264,11 +264,11 @@ const cs = StyleSheet.create({
   heroRow: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' },
   heroCol: { alignItems: 'center' },
   heroLabel: { ...FONTS.medium, fontSize: 12, color: COLORS.gray400, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 },
-  heroValue: { ...FONTS.bold, fontSize: 28, color: COLORS.white },
+  heroValue: { ...FONTS.bold, fontSize: 28, color: COLORS.ink },
   heroDivider: { width: 1, height: 40, backgroundColor: COLORS.surfaceBorder },
 
   section: { marginTop: 28 },
-  sectionTitle: { ...FONTS.bold, fontSize: 18, color: COLORS.white, marginBottom: 4 },
+  sectionTitle: { ...FONTS.bold, fontSize: 18, color: COLORS.ink, marginBottom: 4 },
   sectionSub: { ...FONTS.regular, fontSize: 13, color: COLORS.gray500, marginBottom: 16 },
 
   yardageCard: {
@@ -278,7 +278,7 @@ const cs = StyleSheet.create({
   },
   yardCol: { alignItems: 'center' },
   yardLabel: { ...FONTS.medium, fontSize: 11, color: COLORS.gray400, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 4 },
-  yardVal: { ...FONTS.bold, fontSize: 24, color: COLORS.white },
+  yardVal: { ...FONTS.bold, fontSize: 24, color: COLORS.ink },
   yardUnit: { ...FONTS.regular, fontSize: 11, color: COLORS.gray500, marginTop: 2 },
   yardArrow: { paddingHorizontal: 8 },
   yardArrowText: { ...FONTS.bold, fontSize: 18, color: COLORS.gray600 },
@@ -295,7 +295,7 @@ const cs = StyleSheet.create({
   compassN: { ...FONTS.bold, fontSize: 10, color: COLORS.gray500, position: 'absolute', top: 4 },
   compassArrow: { position: 'absolute', top: 8, width: 24, height: 40, alignItems: 'center' },
   arrowText: { ...FONTS.bold, fontSize: 18, color: COLORS.green500 },
-  compassCenter: { ...FONTS.bold, fontSize: 18, color: COLORS.white },
+  compassCenter: { ...FONTS.bold, fontSize: 18, color: COLORS.ink },
   compassUnit: { ...FONTS.regular, fontSize: 10, color: COLORS.gray500 },
   windLabels: { marginLeft: SPACING.xl, flex: 1 },
   windVal: { ...FONTS.medium, fontSize: 14, color: COLORS.gray300, marginBottom: 6 },
@@ -308,7 +308,7 @@ const cs = StyleSheet.create({
   },
   factorHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
   factorIcon: { fontSize: 16, marginRight: 8 },
-  factorLabel: { ...FONTS.semibold, fontSize: 14, color: COLORS.white, flex: 1 },
+  factorLabel: { ...FONTS.semibold, fontSize: 14, color: COLORS.ink, flex: 1 },
   factorValue: { ...FONTS.bold, fontSize: 14 },
   barTrack: {
     height: 6, backgroundColor: COLORS.surfaceBorder, borderRadius: 3,
@@ -331,6 +331,6 @@ const cs = StyleSheet.create({
     backgroundColor: COLORS.red500, borderWidth: 1.5, borderColor: COLORS.white,
   },
   pinInfo: { flex: 1 },
-  pinLabel: { ...FONTS.bold, fontSize: 16, color: COLORS.white, marginBottom: 4 },
+  pinLabel: { ...FONTS.bold, fontSize: 16, color: COLORS.ink, marginBottom: 4 },
   pinNote: { ...FONTS.regular, fontSize: 13, color: COLORS.gray400, lineHeight: 18 },
 });

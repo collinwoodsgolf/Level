@@ -11,7 +11,7 @@ import { COLORS, FONTS, SPACING, RADIUS, getDifficultyColor, getDifficultyBg } f
 import { useStore, SETUP_PRESETS } from '../services/store';
 import { MANHATTAN_WOODS, MANHATTAN_WOODS_HOLES } from '../services/courseData';
 import { computeRating } from '../services/ratingEngine';
-import { fetchWeather } from '../services/weather';
+import { fetchWeather, degToCompass } from '../services/weather';
 import TopNav from '../components/TopNav';
 import Scorecard from '../components/Scorecard';
 
@@ -45,7 +45,7 @@ function WeatherCard({ weather, onRefresh }) {
       <View style={styles.weatherStats}>
         <WeatherStat value={`${Math.round(weather.temperature_f)}°`} label={weather.description} />
         <WeatherStat value={`${Math.round(weather.wind_speed_mph)}`} label={`mph wind · G${Math.round(weather.wind_gusts_mph)}`} />
-        <WeatherStat value={`${weather.wind_direction_deg}°`} label="direction" />
+        <WeatherStat value={degToCompass(weather.wind_direction_deg)} label="wind from" />
         <WeatherStat value={`${weather.humidity_pct}%`} label="humidity" />
       </View>
     </View>
@@ -165,7 +165,7 @@ function HoleDifficultyList({ holes, onHoleTap }) {
             <View style={[styles.rankBadge, {
               backgroundColor: h.difficulty_rank <= 3
                 ? [COLORS.red500, COLORS.orange500, COLORS.amber500][h.difficulty_rank - 1]
-                : COLORS.surfaceBorder,
+                : COLORS.gray600,
             }]}>
               <Text style={styles.rankText}>{h.difficulty_rank}</Text>
             </View>
@@ -357,18 +357,18 @@ const styles = StyleSheet.create({
 
   // Weather
   weatherCard: {
-    backgroundColor: '#0d2818', borderRadius: RADIUS.lg,
+    backgroundColor: '#E7F0E8', borderRadius: RADIUS.lg,
     padding: SPACING.lg, borderWidth: 1, borderColor: COLORS.green500 + '33',
   },
   weatherLoading: { alignItems: 'center', gap: 10, paddingVertical: 24 },
-  weatherCardFallback: { backgroundColor: '#26200d', borderColor: COLORS.amber500 + '33' },
+  weatherCardFallback: { backgroundColor: '#FBF3DC', borderColor: COLORS.amber500 + '33' },
   weatherHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
   liveDot: { width: 8, height: 8, borderRadius: 4, marginRight: 8 },
   weatherTitle: { ...FONTS.bold, fontSize: 11, color: COLORS.green400, textTransform: 'uppercase', letterSpacing: 0.5, flex: 1 },
   refreshLink: { ...FONTS.semibold, fontSize: 12, color: COLORS.green400 },
   weatherStats: { flexDirection: 'row', justifyContent: 'space-between' },
   weatherStat: { alignItems: 'center', flex: 1 },
-  weatherStatValue: { ...FONTS.heavy, fontSize: 20, color: COLORS.white },
+  weatherStatValue: { ...FONTS.heavy, fontSize: 20, color: COLORS.ink },
   weatherStatLabel: { ...FONTS.regular, fontSize: 10, color: COLORS.gray400, marginTop: 3 },
 
   // Tees

@@ -82,7 +82,7 @@ export default function Logo({ size = 72, wordmark = false, tagline = false }) {
             },
           ]}
         >
-          <Text style={{ color: COLORS.green800, fontSize: s * 0.15, fontWeight: '900' }}>✓</Text>
+          <Text style={{ color: COLORS.green700, fontSize: s * 0.15, fontWeight: '900' }}>✓</Text>
         </View>
       </View>
 
@@ -101,7 +101,7 @@ export default function Logo({ size = 72, wordmark = false, tagline = false }) {
 const styles = StyleSheet.create({
   wrap: { alignItems: 'center' },
   badge: {
-    backgroundColor: COLORS.green800,
+    backgroundColor: COLORS.green700,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
   },
   green: {
     position: 'absolute',
-    backgroundColor: COLORS.green500,
-    opacity: 0.9,
+    backgroundColor: '#5FA06C',
+    opacity: 0.95,
   },
   hole: {
     position: 'absolute',
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     height: 0,
     borderTopColor: 'transparent',
     borderBottomColor: 'transparent',
-    borderLeftColor: '#fbbf24',
+    borderLeftColor: '#DA291C',
     transform: [{ scaleY: 0.62 }],
   },
   tickDot: {
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   wordmark: {
     ...FONTS.black,
-    color: COLORS.white,
+    color: COLORS.ink,
     letterSpacing: 4,
   },
   tagline: {

@@ -194,7 +194,7 @@ const s = StyleSheet.create({
   form: { gap: 12 },
   input: {
     backgroundColor: COLORS.surfaceCard, borderRadius: RADIUS.md,
-    padding: 16, fontSize: 16, color: COLORS.white,
+    padding: 16, fontSize: 16, color: COLORS.ink,
     borderWidth: 1, borderColor: COLORS.surfaceBorder,
     ...FONTS.regular,
   },

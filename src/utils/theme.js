@@ -1,52 +1,56 @@
 /**
  * ATTESTED Design System — iOS App Theme
- * Dark-mode-first, golf-inspired, premium feel
+ * Light, creme-and-white, hunter green brand, Tiger-Sunday red accents.
  */
 
 export const COLORS = {
-  // Primary greens (brand)
-  green900: '#14532d',
-  green800: '#166534',
-  green700: '#15803d',
-  green600: '#16a34a',
-  green500: '#22c55e',
-  green400: '#4ade80',
-  green100: '#dcfce7',
-  green50:  '#f0fdf4',
+  // Hunter green brand scale (dark → light tints)
+  green900: '#DCEBDF',   // lightest tint — badge backgrounds
+  green800: '#CFE3D4',   // tint — avatar/chip backgrounds
+  green700: '#355E3B',   // HUNTER GREEN — primary buttons & brand
+  green600: '#2C5134',   // deep hunter — pressed/borders
+  green500: '#3C6B47',   // accent text & links
+  green400: '#27502F',   // strong accent text on tints
+  green100: '#EAF2EB',
+  green50:  '#F4F8F4',
 
-  // Neutrals
+  // Ink (text on light surfaces)
+  ink: '#1F2A22',
+
+  // Neutrals — warm, tuned for light surfaces
+  // (gray300–700 are TEXT tones: 300 = body, 700 = faintest)
   white: '#ffffff',
-  gray50:  '#f9fafb',
-  gray100: '#f3f4f6',
-  gray200: '#e5e7eb',
-  gray300: '#d1d5db',
-  gray400: '#9ca3af',
-  gray500: '#6b7280',
-  gray600: '#4b5563',
-  gray700: '#374151',
+  gray50:  '#FCFAF5',
+  gray100: '#F4F1E8',
+  gray200: '#E9E4D6',
+  gray300: '#3D4A40',
+  gray400: '#5E6B61',
+  gray500: '#7C8780',
+  gray600: '#A3ADA5',
+  gray700: '#D8DED6',
   gray800: '#1f2937',
   gray900: '#111827',
   black: '#000000',
 
   // Semantic
-  red500: '#ef4444',
-  red600: '#dc2626',
-  orange500: '#f97316',
-  amber500: '#f59e0b',
-  blue500: '#3b82f6',
-  blue600: '#2563eb',
+  red500: '#DA291C',   // Tiger Woods Sunday red
+  red600: '#B91C1C',
+  orange500: '#D9580C',
+  amber500: '#C77F06',
+  blue500: '#2563eb',
+  blue600: '#1d4ed8',
 
-  // Dark mode surfaces
-  surface: '#0f1117',
-  surfaceElevated: '#1a1d27',
-  surfaceCard: '#222636',
-  surfaceBorder: '#2e3347',
+  // Light creme surfaces
+  surface: '#FAF7F0',         // app background — light creme
+  surfaceElevated: '#FFFFFF', // headers, sheets, tab bar
+  surfaceCard: '#FFFFFF',     // cards
+  surfaceBorder: '#E6E0D2',   // warm hairlines
 
   // Tee box colors
   teeBlack: '#1f2937',
   teeGold: '#b8860b',
   teeBlue: '#2563eb',
-  teeWhite: '#9ca3af',
+  teeWhite: '#8A949F',
 };
 
 export const FONTS = {
@@ -67,7 +71,7 @@ export const RADIUS = {
   sm: 6, md: 10, lg: 14, xl: 20, full: 999,
 };
 
-// Difficulty color coding
+// Difficulty color coding (text/accents on light surfaces)
 export function getDifficultyColor(delta) {
   if (delta >= 3) return COLORS.red600;
   if (delta >= 1) return COLORS.orange500;
@@ -75,9 +79,10 @@ export function getDifficultyColor(delta) {
   return COLORS.green500;
 }
 
+// Difficulty tint backgrounds (light)
 export function getDifficultyBg(delta) {
-  if (delta >= 3) return '#2d1215';
-  if (delta >= 1) return '#2d1f0e';
-  if (delta >= 0) return '#1a1d27';
-  return '#0d2818';
+  if (delta >= 3) return '#FBE4E2';
+  if (delta >= 1) return '#FBEEDD';
+  if (delta >= 0) return '#F1EFE7';
+  return '#E3EEE5';
 }

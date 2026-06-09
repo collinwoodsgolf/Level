@@ -74,7 +74,7 @@ export default function ForgotPasswordScreen({ navigation }) {
             <Text style={s.title}>Check Your Email</Text>
             <Text style={s.desc}>
               If an account exists for{' '}
-              <Text style={{ color: COLORS.white }}>{email.trim()}</Text>, a reset link is on its way.
+              <Text style={{ color: COLORS.ink }}>{email.trim()}</Text>, a reset link is on its way.
             </Text>
             <TouchableOpacity style={s.primaryBtn} onPress={() => navigation.goBack()} activeOpacity={0.85}>
               <Text style={s.primaryBtnText}>Back to Sign In</Text>
@@ -96,14 +96,14 @@ const s = StyleSheet.create({
   inner: { flex: 1, justifyContent: 'center', padding: SPACING.xxl },
   logoWrap: { alignItems: 'center', marginBottom: 28 },
   sentIcon: { fontSize: 44, textAlign: 'center', marginBottom: 12 },
-  title: { ...FONTS.bold, fontSize: 26, color: COLORS.white, textAlign: 'center' },
+  title: { ...FONTS.bold, fontSize: 26, color: COLORS.ink, textAlign: 'center' },
   desc: {
     ...FONTS.regular, fontSize: 15, color: COLORS.gray400,
     textAlign: 'center', marginTop: 10, marginBottom: 26, lineHeight: 22,
   },
   input: {
     backgroundColor: COLORS.surfaceCard, borderRadius: RADIUS.md,
-    padding: 16, fontSize: 16, color: COLORS.white,
+    padding: 16, fontSize: 16, color: COLORS.ink,
     borderWidth: 1, borderColor: COLORS.surfaceBorder,
     ...FONTS.regular, marginBottom: 14,
   },

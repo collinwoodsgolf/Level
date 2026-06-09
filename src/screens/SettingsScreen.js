@@ -116,7 +116,7 @@ const s = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 15, paddingHorizontal: SPACING.lg },
   rowBorder: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: COLORS.surfaceBorder },
   icon: { fontSize: 17, marginRight: 12, width: 24, textAlign: 'center' },
-  label: { ...FONTS.regular, fontSize: 15, color: COLORS.white, flex: 1 },
+  label: { ...FONTS.regular, fontSize: 15, color: COLORS.ink, flex: 1 },
   right: { flexDirection: 'row', alignItems: 'center' },
   value: { ...FONTS.regular, fontSize: 14, color: COLORS.gray400, marginRight: 8 },
   chevron: { ...FONTS.regular, fontSize: 20, color: COLORS.gray600 },

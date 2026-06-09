@@ -5,10 +5,10 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "backgroundColor": "#0f1117",
+      "backgroundColor": "#FAF7F0",
       "resizeMode": "contain"
     },
     "assetBundlePatterns": [
@@ -26,7 +26,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#0f1117"
+        "backgroundColor": "#FAF7F0"
       },
       "package": "com.attested.app"
     },

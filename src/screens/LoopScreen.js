@@ -190,7 +190,7 @@ const s = StyleSheet.create({
 
   youCard: {
     flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#0d2818', borderRadius: RADIUS.lg,
+    backgroundColor: '#E7F0E8', borderRadius: RADIUS.lg,
     borderWidth: 1, borderColor: COLORS.green500 + '33',
     padding: SPACING.lg, marginBottom: 8,
   },
@@ -216,7 +216,7 @@ const s = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center', marginBottom: 6,
   },
   friendAvatarText: { ...FONTS.bold, fontSize: 13, color: COLORS.green400 },
-  friendName: { ...FONTS.semibold, fontSize: 11, color: COLORS.white },
+  friendName: { ...FONTS.semibold, fontSize: 11, color: COLORS.ink },
   friendHcpRow: { flexDirection: 'row', alignItems: 'center', marginTop: 2 },
   friendHcp: { ...FONTS.heavy, fontSize: 12, color: COLORS.gray400 },
   friendTrend: { fontSize: 8, marginLeft: 3 },
@@ -232,7 +232,7 @@ const s = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center', marginRight: 10,
   },
   postAvatarText: { ...FONTS.bold, fontSize: 13, color: COLORS.green400 },
-  postName: { ...FONTS.semibold, fontSize: 14, color: COLORS.white },
+  postName: { ...FONTS.semibold, fontSize: 14, color: COLORS.ink },
   postMeta: { ...FONTS.regular, fontSize: 11, color: COLORS.gray500, marginTop: 2 },
   attestedBadge: {
     width: 22, height: 22, borderRadius: 11, backgroundColor: COLORS.green900,
@@ -246,7 +246,7 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.surfaceBorder,
     alignItems: 'center', justifyContent: 'center',
   },
-  scoreValue: { ...FONTS.black, fontSize: 34, color: COLORS.white },
+  scoreValue: { ...FONTS.black, fontSize: 34, color: COLORS.ink },
   scoreCrown: { fontSize: 12, position: 'absolute', top: 6, right: 8 },
   scoreDetail: { flex: 1, gap: 6 },
   scoreDetailRow: { flexDirection: 'row', justifyContent: 'space-between' },

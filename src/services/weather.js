@@ -5,6 +5,13 @@
 
 import { WMO_DESC, WMO_PRECIP } from './ratingEngine';
 
+/** Convert wind direction degrees → 16-point compass (N, NNE, NE, …) */
+export function degToCompass(deg) {
+  if (deg == null || isNaN(deg)) return '—';
+  const pts = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  return pts[Math.round(((deg % 360) + 360) % 360 / 22.5) % 16];
+}
+
 const SEASONAL_AVG = [
   { temp: 32, hum: 60, wind: 10, gust: 18, dir: 290, desc: 'Winter' },
   { temp: 35, hum: 58, wind: 10, gust: 18, dir: 290, desc: 'Late winter' },

@@ -60,7 +60,7 @@ function MainTabs() {
           paddingBottom: 26,
           paddingTop: 8,
         },
-        tabBarActiveTintColor: COLORS.green500,
+        tabBarActiveTintColor: COLORS.green700,
         tabBarInactiveTintColor: COLORS.gray500,
         tabBarLabelStyle: { ...FONTS.semibold, fontSize: 11 },
       }}
@@ -93,18 +93,18 @@ export default function App() {
     <StripeProvider publishableKey={STRIPE_PUB_KEY}>
       <NavigationContainer
         theme={{
-          dark: true,
+          dark: false,
           colors: {
             primary: COLORS.green500,
             background: COLORS.surface,
             card: COLORS.surfaceElevated,
-            text: COLORS.white,
+            text: COLORS.ink,
             border: COLORS.surfaceBorder,
             notification: COLORS.green500,
           },
         }}
       >
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="dark-content" />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {!isAuthenticated ? (
             <>

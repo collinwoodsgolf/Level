@@ -137,7 +137,7 @@ const s = StyleSheet.create({
     borderWidth: 1, borderColor: COLORS.surfaceBorder, padding: SPACING.lg,
   },
   cardTop: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 14 },
-  course: { ...FONTS.bold, fontSize: 15, color: COLORS.white },
+  course: { ...FONTS.bold, fontSize: 15, color: COLORS.ink },
   meta: { ...FONTS.regular, fontSize: 11, color: COLORS.gray500, marginTop: 3 },
   attestedBadge: {
     backgroundColor: COLORS.green900, borderRadius: RADIUS.full,
@@ -147,13 +147,13 @@ const s = StyleSheet.create({
 
   statsRow: { flexDirection: 'row', alignItems: 'center' },
   stat: { flex: 1, alignItems: 'center' },
-  statValue: { ...FONTS.heavy, fontSize: 18, color: COLORS.white },
+  statValue: { ...FONTS.heavy, fontSize: 18, color: COLORS.ink },
   statLabel: { ...FONTS.bold, fontSize: 7.5, color: COLORS.gray500, letterSpacing: 0.8, marginTop: 3 },
   statSub: { ...FONTS.regular, fontSize: 9, color: COLORS.gray600, marginTop: 1 },
   statDivider: { width: StyleSheet.hairlineWidth, height: 30, backgroundColor: COLORS.surfaceBorder },
 
   empty: { alignItems: 'center', paddingTop: 60 },
   emptyIcon: { fontSize: 40, marginBottom: 12 },
-  emptyText: { ...FONTS.bold, fontSize: 17, color: COLORS.white },
+  emptyText: { ...FONTS.bold, fontSize: 17, color: COLORS.ink },
   emptySub: { ...FONTS.regular, fontSize: 13, color: COLORS.gray500, textAlign: 'center', marginTop: 6, paddingHorizontal: 40 },
 });

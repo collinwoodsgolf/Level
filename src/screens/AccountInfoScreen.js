@@ -153,10 +153,10 @@ const s = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingVertical: 15, paddingHorizontal: SPACING.lg,
   },
-  fieldLabel: { ...FONTS.regular, fontSize: 15, color: COLORS.white },
+  fieldLabel: { ...FONTS.regular, fontSize: 15, color: COLORS.ink },
   fieldValue: { ...FONTS.regular, fontSize: 15, color: COLORS.gray400, maxWidth: '60%', textAlign: 'right' },
   fieldInput: {
-    ...FONTS.regular, fontSize: 15, color: COLORS.white, textAlign: 'right',
+    ...FONTS.regular, fontSize: 15, color: COLORS.ink, textAlign: 'right',
     borderBottomWidth: 1, borderBottomColor: COLORS.green500, minWidth: 140, paddingVertical: 2,
   },
   divider: { height: StyleSheet.hairlineWidth, backgroundColor: COLORS.surfaceBorder, marginLeft: SPACING.lg },

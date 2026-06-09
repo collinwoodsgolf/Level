@@ -106,7 +106,7 @@ const s = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: COLORS.surfaceBorder,
   },
   left: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  title: { ...FONTS.heavy, fontSize: 19, color: COLORS.white, letterSpacing: 1.5 },
+  title: { ...FONTS.heavy, fontSize: 19, color: COLORS.ink, letterSpacing: 1.5 },
   subtitle: { ...FONTS.regular, fontSize: 11, color: COLORS.gray500, marginTop: 1 },
 
   avatarBtn: {
@@ -131,7 +131,7 @@ const s = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center', marginRight: 12,
   },
   menuAvatarText: { ...FONTS.bold, fontSize: 17, color: COLORS.white },
-  menuName: { ...FONTS.semibold, fontSize: 15, color: COLORS.white },
+  menuName: { ...FONTS.semibold, fontSize: 15, color: COLORS.ink },
   menuEmail: { ...FONTS.regular, fontSize: 12, color: COLORS.gray500, marginTop: 1 },
   hcpBadge: {
     backgroundColor: COLORS.green900, borderRadius: RADIUS.md,
@@ -144,6 +144,6 @@ const s = StyleSheet.create({
 
   menuRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, paddingHorizontal: 16 },
   menuIcon: { fontSize: 16, width: 28, textAlign: 'center', marginRight: 10 },
-  menuLabel: { ...FONTS.regular, fontSize: 15, color: COLORS.white, flex: 1 },
+  menuLabel: { ...FONTS.regular, fontSize: 15, color: COLORS.ink, flex: 1 },
   chevron: { ...FONTS.regular, fontSize: 20, color: COLORS.gray600 },
 });

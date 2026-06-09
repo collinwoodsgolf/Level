@@ -129,7 +129,7 @@ const s = StyleSheet.create({
   cellText: { ...FONTS.regular, fontSize: 12, color: COLORS.gray300 },
   labelText: { ...FONTS.bold, fontSize: 10, color: COLORS.gray500 },
   holeNumText: { ...FONTS.heavy, fontSize: 12, color: COLORS.green400 },
-  totalText: { ...FONTS.heavy, fontSize: 12, color: COLORS.white },
+  totalText: { ...FONTS.heavy, fontSize: 12, color: COLORS.ink },
   hcpText: { ...FONTS.regular, fontSize: 11, color: COLORS.gray500 },
   note: { ...FONTS.regular, fontSize: 10, color: COLORS.gray600, marginTop: 8, textAlign: 'center' },
 });

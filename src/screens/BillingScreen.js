@@ -121,7 +121,7 @@ const s = StyleSheet.create({
   },
 
   planRow: { flexDirection: 'row', alignItems: 'center', padding: SPACING.xl },
-  planName: { ...FONTS.bold, fontSize: 18, color: COLORS.white },
+  planName: { ...FONTS.bold, fontSize: 18, color: COLORS.ink },
   planDesc: { ...FONTS.regular, fontSize: 13, color: COLORS.gray400, marginTop: 4, lineHeight: 18 },
   badge: { paddingHorizontal: 12, paddingVertical: 4, borderRadius: RADIUS.full, backgroundColor: COLORS.gray700 },
   badgeActive: { backgroundColor: COLORS.green900 },
@@ -142,12 +142,12 @@ const s = StyleSheet.create({
 
   pmRow: { flexDirection: 'row', alignItems: 'center', padding: SPACING.lg },
   pmIcon: { fontSize: 20, marginRight: 12 },
-  pmText: { ...FONTS.semibold, fontSize: 15, color: COLORS.white },
+  pmText: { ...FONTS.semibold, fontSize: 15, color: COLORS.ink },
   pmSub: { ...FONTS.regular, fontSize: 12, color: COLORS.gray500, marginTop: 2 },
   chevron: { ...FONTS.regular, fontSize: 20, color: COLORS.gray600 },
 
   invRow: { flexDirection: 'row', alignItems: 'center', padding: SPACING.lg },
-  invDate: { ...FONTS.semibold, fontSize: 14, color: COLORS.white },
+  invDate: { ...FONTS.semibold, fontSize: 14, color: COLORS.ink },
   invId: { ...FONTS.regular, fontSize: 11, color: COLORS.gray600, marginTop: 2 },
   invAmount: { ...FONTS.bold, fontSize: 14, color: COLORS.gray300, marginRight: 10 },
   paidBadge: { backgroundColor: COLORS.green900, borderRadius: RADIUS.full, paddingHorizontal: 8, paddingVertical: 3 },

@@ -31,6 +31,6 @@ const s = StyleSheet.create({
   },
   backBtn: { width: 36, alignItems: 'flex-start' },
   backText: { ...FONTS.regular, fontSize: 30, color: COLORS.green500, marginTop: -6 },
-  title: { ...FONTS.bold, fontSize: 17, color: COLORS.white, flex: 1, textAlign: 'center' },
+  title: { ...FONTS.bold, fontSize: 17, color: COLORS.ink, flex: 1, textAlign: 'center' },
   right: { width: 36, alignItems: 'flex-end' },
 });
