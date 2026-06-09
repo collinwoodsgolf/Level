@@ -3,6 +3,7 @@
  */
 import { create } from 'zustand';
 import { MY_ROUNDS, FRIENDS, computeHandicapIndex, roundDifferential } from './social';
+import { aggregateRoundSG } from './strokesGained';
 
 export const useStore = create((set, get) => ({
   // Auth
@@ -29,7 +30,7 @@ export const useStore = create((set, get) => ({
   // Active round — rating snapshot is LOCKED at tee-off and governs the
   // whole round (handicap + wager terms are known before the first swing).
   activeRound: null,
-  startRound: () => {
+  startRound: ({ trackSG = false } = {}) => {
     const { rating, selectedTeeBox, weather } = get();
     if (!rating) return null;
     const snapshot = {
@@ -45,10 +46,28 @@ export const useStore = create((set, get) => ({
         ? `${Math.round(weather.temperature_f)}°F · ${Math.round(weather.wind_speed_mph)} mph wind`
         : 'Conditions unavailable',
       locked: true,
+      // Strokes-gained tracking (opt-in). Per-hole expected strokes are
+      // locked with the snapshot so SG respects today's conditions.
+      sgEnabled: trackSG,
+      holeStats: {},
+      holeMeta: Object.fromEntries(
+        (rating.hole_difficulties || []).map(h => [h.hole, {
+          par: h.par, difficulty_delta: h.difficulty_delta,
+        }])
+      ),
     };
     set({ activeRound: snapshot });
     return snapshot;
   },
+  recordHoleStats: (holeNum, stats) => set(state => {
+    if (!state.activeRound) return {};
+    return {
+      activeRound: {
+        ...state.activeRound,
+        holeStats: { ...state.activeRound.holeStats, [holeNum]: stats },
+      },
+    };
+  }),
   endRound: (score) => {
     const { activeRound } = get();
     if (!activeRound || !score) return null;
@@ -65,6 +84,9 @@ export const useStore = create((set, get) => ({
       weather: activeRound.weatherSummary,
       attested: true,
       differential: roundDifferential(Number(score), activeRound.dynamicRating, activeRound.dynamicSlope),
+      sg: activeRound.sgEnabled
+        ? aggregateRoundSG(activeRound.holeStats, activeRound.holeMeta)
+        : null,
     };
     set(state => ({ rounds: [round, ...state.rounds], activeRound: null }));
     return round;

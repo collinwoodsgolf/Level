@@ -57,6 +57,20 @@ function RoundCard({ round }) {
           <Text style={s.statLabel}>DIFFERENTIAL</Text>
         </View>
       </View>
+
+      {/* Strokes gained (when tracked) */}
+      {round.sg && (
+        <View style={s.sgRow}>
+          {[['tee', 'TEE'], ['approach', 'APP'], ['short', 'ARG'], ['putting', 'PUTT'], ['total', 'SG TOT']].map(([k, label]) => (
+            <View key={k} style={[s.sgChip, k === 'total' && s.sgChipTotal]}>
+              <Text style={[s.sgValue, { color: round.sg[k] >= 0 ? COLORS.green400 : COLORS.red500 }]}>
+                {round.sg[k] > 0 ? '+' : ''}{round.sg[k].toFixed(1)}
+              </Text>
+              <Text style={s.sgLabel}>{label}</Text>
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
@@ -151,6 +165,18 @@ const s = StyleSheet.create({
   statLabel: { ...FONTS.bold, fontSize: 7.5, color: COLORS.gray500, letterSpacing: 0.8, marginTop: 3 },
   statSub: { ...FONTS.regular, fontSize: 9, color: COLORS.gray600, marginTop: 1 },
   statDivider: { width: StyleSheet.hairlineWidth, height: 30, backgroundColor: COLORS.surfaceBorder },
+
+  sgRow: {
+    flexDirection: 'row', gap: 6, marginTop: 12, paddingTop: 10,
+    borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: COLORS.surfaceBorder,
+  },
+  sgChip: {
+    flex: 1, alignItems: 'center', backgroundColor: COLORS.gray100,
+    borderRadius: RADIUS.md, paddingVertical: 6,
+  },
+  sgChipTotal: { backgroundColor: COLORS.green900 },
+  sgValue: { ...FONTS.heavy, fontSize: 12 },
+  sgLabel: { ...FONTS.bold, fontSize: 6.5, color: COLORS.gray500, letterSpacing: 0.6, marginTop: 2 },
 
   empty: { alignItems: 'center', paddingTop: 60 },
   emptyIcon: { fontSize: 40, marginBottom: 12 },

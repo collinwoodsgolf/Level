@@ -14,6 +14,7 @@ import { computeRating } from '../services/ratingEngine';
 import { fetchWeather, degToCompass } from '../services/weather';
 import TopNav from '../components/TopNav';
 import Scorecard from '../components/Scorecard';
+import LiveSGTracker from '../components/LiveSGTracker';
 
 // ─── Sub-components ───
 
@@ -353,6 +354,7 @@ export default function DashboardScreen({ navigation }) {
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Lock It In', onPress: () => startRound() },
+        { text: 'Lock + Track Strokes Gained', onPress: () => startRound({ trackSG: true }) },
       ],
     );
   };
@@ -421,6 +423,9 @@ export default function DashboardScreen({ navigation }) {
           onEnd={handleEndRound}
           onCancel={handleCancelRound}
         />
+
+        {/* Live strokes-gained tracker (only when tracking is on) */}
+        <LiveSGTracker />
 
         {/* Rating Hero — the headline number first; tap rating for charts */}
         <RatingHero
