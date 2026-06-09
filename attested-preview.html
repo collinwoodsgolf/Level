@@ -109,6 +109,18 @@
   .track b{height:100%;display:block;}
   .hrow .hd{font-size:9px;font-weight:700;width:32px;text-align:right;}
   .axl{display:flex;justify-content:space-between;font-size:8px;color:var(--t4);padding:0 36px 3px;}
+  /* courses */
+  .crow{display:flex;gap:6px;overflow:hidden;}
+  .cchip{width:128px;flex-shrink:0;background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:7px 9px;}
+  .cchip.on{background:var(--hunter);border-color:var(--hunter);}
+  .cchip .nm{font-size:9px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:3px;}
+  .cchip.on .nm{color:#fff;}
+  .cchip .mt{font-size:7px;color:var(--t3);margin-top:2px;}
+  .cchip.on .mt{color:rgba(255,255,255,.75);}
+  .vtick{display:inline-flex;width:11px;height:11px;border-radius:50%;background:var(--tint2);color:var(--g400);font-size:7px;font-weight:700;align-items:center;justify-content:center;margin-left:auto;}
+  .cchip.on .vtick{background:rgba(255,255,255,.25);color:#fff;}
+  .cmore{width:46px;flex-shrink:0;border:1.5px dashed var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--t3);font-size:7px;font-weight:600;}
+  .cmore b{font-size:13px;color:var(--g500);}
   /* my game */
   .mgcard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 11px;}
   .mgcard.weak{border-left:3px solid var(--red);}
@@ -224,7 +236,7 @@
 
 <div class="pagehead">
   <h1 style="line-height:1.1">LEVEL<br><span style="display:inline-block;width:150px;height:3px;background:#355E3B;border-radius:2px;vertical-align:middle"></span><br><span style="color:#7C8780;font-size:14px;letter-spacing:8px;font-weight:600">GOLF</span></h1>
-  <p>Level Golf — creme &amp; hunter green with Tiger-Sunday red · June 2026</p>
+  
 </div>
 
 <div class="row">
@@ -245,6 +257,7 @@
         <div class="btn green">Sign In</div>
         <div class="divline">or</div>
         <div class="btn dark"> Continue with Apple</div>
+        <div class="btn" style="background:#fff;border:1px solid var(--border);color:var(--ink)"><span style="color:#4285F4;font-weight:900">G</span>&nbsp; Continue with Google</div>
         <div class="toggle">Don't have an account? <b>Sign Up</b></div>
       </div>
     </div></div>
@@ -305,6 +318,56 @@
       </div>
     </div></div>
     <div class="cap">Dashboard · front 9 + back 9 · wind as compass</div>
+  </div>
+
+  <!-- COURSE PICKER -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="topnav">
+        <div class="logoBadge mini"><span class="tick">✓</span><span class="green"></span><span class="stick"></span><span class="flag"></span></div>
+        <div class="t"><b>LEVEL</b><span>Rockland Country Club · Sparkill, NY</span></div>
+        <div class="avatar">C</div>
+      </div>
+      <div class="scroll">
+        <div class="crow">
+          <div class="cchip"><div class="nm">🏠 Manhattan Woods<span class="vtick">✓</span></div><div class="mt">West Nyack, NY · 42 rounds</div></div>
+          <div class="cchip on"><div class="nm">Rockland CC<span class="vtick">✓</span></div><div class="mt">Sparkill, NY · 11 rounds</div></div>
+          <div class="cchip"><div class="nm">Blue Hill GC</div><div class="mt">Pearl River, NY · 4 rounds</div></div>
+          <div class="cmore"><b>＋</b>More</div>
+        </div>
+        <div class="startbar"><span class="play">▶</span><div style="flex:1"><b>Start Round</b><span>Capture &amp; lock today's rating — 73.6 / 138</span></div><span class="chevw">›</span></div>
+        <div class="heroRow">
+          <div class="hero" style="border-color:rgba(217,88,12,.35)"><div class="l">TODAY'S RATING</div><div class="v" style="color:var(--orange)">73.6</div><div class="d" style="color:var(--orange)">+1.2 vs static</div><div class="pill">Playing Tough</div><div class="taphint">Tap for factor charts ›</div></div>
+          <div class="hero"><div class="l">USGA STATIC</div><div class="v" style="color:var(--t2)">72.4</div><div class="d" style="color:var(--t3)">Slope 134</div></div>
+          <div class="hero"><div class="l">TODAY'S SLOPE</div><div class="v" style="color:var(--red)">138</div><div class="d" style="color:var(--red)">+4</div></div>
+        </div>
+        <div class="weather">
+          <div class="h"><span class="dot"></span> LIVE — OPEN-METEO <span style="margin-left:auto;color:var(--g500)">↻ Refresh</span></div>
+          <div class="stats">
+            <div class="ws"><b>66°</b><span>Overcast</span></div>
+            <div class="ws"><b>11</b><span>mph wind · G17</span></div>
+            <div class="ws"><b>W</b><span>wind from</span></div>
+            <div class="ws"><b>61%</b><span>humidity</span></div>
+          </div>
+        </div>
+        <div class="seclabel">TEES &amp; COURSE SETUP</div>
+        <div class="tees">
+          <div class="tee on"><b>Black</b><span>6,712</span></div>
+          <div class="tee"><b>Gold</b><span>6,310</span></div>
+          <div class="tee"><b>Blue</b><span>5,905</span></div>
+          <div class="tee"><b>White</b><span>5,310</span></div>
+        </div>
+        <div style="text-align:center;font-size:8px;color:var(--t4);margin-top:4px">Weather, rating &amp; scorecard recompute per course — home and most-played courses always first</div>
+      </div>
+      <div class="tabbar">
+        <div class="tab on"><span class="ic">⛳</span>Ratings</div>
+        <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">📊</span>My Game</div>
+        <div class="tab"><span class="ic">💰</span>Wagers</div>
+      </div>
+    </div></div>
+    <div class="cap">Course picker · onboarded courses</div>
   </div>
 
   <!-- MENU OPEN -->
