@@ -61,6 +61,18 @@ const GREEN = {
   SIZE_BASELINE: 5500,    // sq ft
 };
 
+const PIN_SLOPE = {
+  // Slope at the pin (measured by laying a phone at the cup, or from a
+  // contour map). Baseline pinnable slope ≈ 1.5%. Difficulty grows
+  // superlinearly and is amplified by green speed (3% at stimp 12 is a
+  // different sport than 3% at stimp 9).
+  REF_PCT: 1.5,
+  LINEAR: 0.05,        // strokes per % above baseline at baseline stimp
+  QUADRATIC: 0.022,    // per %² above baseline
+  DOWNHILL_RELIEF: 0.02, // per % below baseline (flat pins putt easier)
+  SPEED_EXP: 1.6,      // (stimp/baseline)^exp multiplier
+};
+
 const FIRMNESS = {
   soft:   { dist: -0.003, green: -0.02, stopping: 0.8 },
   medium: { dist: 0,      green: 0,     stopping: 1.0 },
@@ -221,12 +233,65 @@ export function greenDifficulty(pin, gsize, shape, tiers, stimp, stimpBase, bunk
 }
 
 /**
- * Compute per-hole difficulty delta
+ * Green difficulty from MEASURED pin data (engine v3).
+ * pinData: {
+ *   slope_pct           — surface slope % at the cup (phone-on-green or contour map)
+ *   dist_from_center_ft — pin distance from green center (GPS-derived), optional
+ * }
+ * Replaces the bucket model (front/back/center) when real data exists.
+ */
+export function greenDifficultyMeasured(pinData, gsize, shape, tiers, stimp, stimpBase, bunkers, firmness) {
+  let d = 0;
+  const tierM = 1 + (tiers - 1) * 0.15;
+  const shapeM = SHAPE_MULT[shape] || 1;
+  const speedM = Math.pow(Math.max(stimp, 6) / Math.max(stimpBase, 6), PIN_SLOPE.SPEED_EXP);
+
+  // 1. Slope at the pin × green speed — the dominant term
+  const slope = pinData.slope_pct ?? PIN_SLOPE.REF_PCT;
+  const ds = slope - PIN_SLOPE.REF_PCT;
+  if (ds >= 0) {
+    d += (PIN_SLOPE.LINEAR * ds + PIN_SLOPE.QUADRATIC * ds * ds) * speedM;
+  } else {
+    d -= PIN_SLOPE.DOWNHILL_RELIEF * Math.abs(ds);
+  }
+
+  // 2. Pin eccentricity from measured distance (falls back to center)
+  if (pinData.dist_from_center_ft != null) {
+    const gradiusFt = Math.sqrt(Math.max(gsize, 2000) / Math.PI); // actual radius, ft
+    const eccen = Math.min(pinData.dist_from_center_ft / gradiusFt, 1.2);
+    let pinD = GREEN.PIN_LINEAR * eccen + GREEN.PIN_QUADRATIC * eccen * eccen;
+    pinD *= (1 + bunkers * GREEN.BUNKER_FACTOR);
+    d += pinD * tierM * shapeM;
+  }
+
+  // 3. Raw stimp term (same as bucket model)
+  const sd = stimp - stimpBase;
+  d += (GREEN.STIMP_LINEAR * sd + GREEN.STIMP_QUADRATIC * sd * sd) * tierM * shapeM;
+
+  // 4. Firmness + size (same as bucket model)
+  const ff = FIRMNESS[firmness] || FIRMNESS.medium;
+  d += ff.green * tierM;
+  const sf = GREEN.SIZE_BASELINE / Math.max(gsize, 2000);
+  if (sf > 1) d += (sf - 1) * 0.05;
+  else d -= (1 - sf) * 0.02;
+
+  return d;
+}
+
+/**
+ * Compute per-hole difficulty delta.
+ * Engine v3 optional measured inputs on conds:
+ *   pin_data: { [holeNum]: { slope_pct, dist_from_center_ft } }
+ *   tee_data: { [holeNum]: { offset_yds } }  — measured marker offset
+ *     (from geo.teeOffsetYds; + = back/longer). Overrides bucket presets.
  */
 export function computeHole(hole, conds) {
   const teeBox = conds.tee_box || 'black';
   const baseYds = hole.yds[teeBox] || hole.yds.black;
-  const teeAdj = TEE_ADJ[conds.tee_adjustments?.[hole.hole] || 'middle'] || 0;
+  const teeData = conds.tee_data?.[hole.hole];
+  const teeAdj = teeData?.offset_yds != null
+    ? teeData.offset_yds
+    : (TEE_ADJ[conds.tee_adjustments?.[hole.hole] || 'middle'] || 0);
   const actualYds = baseYds + teeAdj;
   const { headwind, crosswind } = windComponents(
     conds.wind_speed_mph || 0, conds.wind_direction_deg || 0, hole.heading
@@ -259,11 +324,18 @@ export function computeHole(hole, conds) {
   // Tee position
   comp.tee_position = +(teeAdj * 0.004).toFixed(5);
 
-  // Green difficulty
+  // Green difficulty — measured pin data wins over bucket presets
+  const pinData = conds.pin_data?.[hole.hole];
   const pin = conds.pin_positions?.[hole.hole] || 'center';
-  comp.green_difficulty = +greenDifficulty(
-    pin, hole.gsize, hole.shape, hole.tiers,
-    conds.green_speed_stimp || 10.5, 10.5, hole.bunkers, conds.firmness || 'medium'
+  comp.green_difficulty = +(pinData
+    ? greenDifficultyMeasured(
+        pinData, hole.gsize, hole.shape, hole.tiers,
+        conds.green_speed_stimp || 10.5, 10.5, hole.bunkers, conds.firmness || 'medium'
+      )
+    : greenDifficulty(
+        pin, hole.gsize, hole.shape, hole.tiers,
+        conds.green_speed_stimp || 10.5, 10.5, hole.bunkers, conds.firmness || 'medium'
+      )
   ).toFixed(5);
 
   // Precipitation
@@ -292,16 +364,35 @@ export function computeHole(hole, conds) {
     difficulty_delta: +total.toFixed(4),
     components: Object.fromEntries(Object.entries(comp).map(([k, v]) => [k, +v.toFixed(4)])),
     pin_position: pin, handicap_index: hole.hcp,
+    // Data provenance — what fed this hole's number
+    data_source: {
+      pin: pinData ? 'measured' : 'preset',
+      tee: teeData?.offset_yds != null ? 'measured' : 'preset',
+      pin_slope_pct: pinData?.slope_pct ?? null,
+      tee_offset_yds: teeData?.offset_yds ?? null,
+    },
   };
 }
 
 /**
- * Compute full course rating for current conditions
+ * Compute full course rating for current conditions.
+ * Optional `calibration` ({ factors: {factor: multiplier} }) is the output
+ * of the empirical-Bayes layer in calibration.js — per-factor multipliers
+ * learned from how the field actually scored vs prediction.
  */
-export function computeRating(conds, courseData, holes) {
+export function computeRating(conds, courseData, holes, calibration = null) {
   const teeBox = conds.tee_box || 'black';
   const teeInfo = courseData.tee_boxes[teeBox] || courseData.tee_boxes.black;
-  const hrs = holes.map(h => computeHole(h, { ...conds, altitude_ft: courseData.altitude_ft }));
+  const hrs = holes.map(h => {
+    const r = computeHole(h, { ...conds, altitude_ft: courseData.altitude_ft });
+    if (calibration?.factors) {
+      r.components = Object.fromEntries(
+        Object.entries(r.components).map(([k, v]) => [k, +(v * (calibration.factors[k] ?? 1)).toFixed(4)])
+      );
+      r.difficulty_delta = +Object.values(r.components).reduce((s, v) => s + v, 0).toFixed(4);
+    }
+    return r;
+  });
   const totalDelta = hrs.reduce((s, h) => s + h.difficulty_delta, 0);
 
   const todayRating = +(teeInfo.rating + totalDelta).toFixed(1);
@@ -339,6 +430,13 @@ export function computeRating(conds, courseData, holes) {
     easiest_holes: sorted.slice(-3).map(h => h.hole),
     front_nine_delta: frontD, back_nine_delta: backD,
     factor_summary: factorSummary,
+    // Provenance summary — how much of today's rating is measured vs preset
+    data_quality: {
+      measured_pins: hrs.filter(h => h.data_source.pin === 'measured').length,
+      measured_tees: hrs.filter(h => h.data_source.tee === 'measured').length,
+      calibrated: !!calibration?.factors,
+      calibration_observations: calibration?.observations ?? 0,
+    },
   };
 }
 
