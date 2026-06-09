@@ -19,6 +19,7 @@ import DashboardScreen from './src/screens/DashboardScreen';
 import HoleDetailScreen from './src/screens/HoleDetailScreen';
 import LoopScreen from './src/screens/LoopScreen';
 import WagersScreen from './src/screens/WagersScreen';
+import MyGameScreen from './src/screens/MyGameScreen';
 import RatingInsightsScreen from './src/screens/RatingInsightsScreen';
 import AccountInfoScreen from './src/screens/AccountInfoScreen';
 import BillingScreen from './src/screens/BillingScreen';
@@ -81,6 +82,14 @@ function MainTabs() {
         options={{
           tabBarLabel: 'The Loop',
           tabBarIcon: () => <TabIcon glyph="🤝" />,
+        }}
+      />
+      <Tab.Screen
+        name="MyGame"
+        component={MyGameScreen}
+        options={{
+          tabBarLabel: 'My Game',
+          tabBarIcon: () => <TabIcon glyph="📊" />,
         }}
       />
       <Tab.Screen

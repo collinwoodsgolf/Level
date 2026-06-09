@@ -115,9 +115,12 @@ const WMO_PRECIP = {
  */
 export function windComponents(windSpeedMph, windDirDeg, holeHeading) {
   const rad = ((windDirDeg - holeHeading) * Math.PI) / 180;
+  // crosswind_lr: signed, + = wind blowing LEFT-TO-RIGHT across the hole
+  // (wind direction is "from"; wind from the player's left pushes the ball right)
   return {
     headwind: windSpeedMph * Math.cos(rad),
     crosswind: Math.abs(windSpeedMph * Math.sin(rad)),
+    crosswind_lr: +(-windSpeedMph * Math.sin(rad)).toFixed(1),
   };
 }
 
@@ -293,7 +296,7 @@ export function computeHole(hole, conds) {
     ? teeData.offset_yds
     : (TEE_ADJ[conds.tee_adjustments?.[hole.hole] || 'middle'] || 0);
   const actualYds = baseYds + teeAdj;
-  const { headwind, crosswind } = windComponents(
+  const { headwind, crosswind, crosswind_lr } = windComponents(
     conds.wind_speed_mph || 0, conds.wind_direction_deg || 0, hole.heading
   );
 
@@ -361,6 +364,7 @@ export function computeHole(hole, conds) {
     hole: hole.hole, par: hole.par, yardage: baseYds,
     actual_yardage: actualYds, effective_yardage: Math.round(effDist),
     headwind_mph: +headwind.toFixed(1), crosswind_mph: +crosswind.toFixed(1),
+    crosswind_lr_mph: crosswind_lr,
     difficulty_delta: +total.toFixed(4),
     components: Object.fromEntries(Object.entries(comp).map(([k, v]) => [k, +v.toFixed(4)])),
     pin_position: pin, handicap_index: hole.hcp,
