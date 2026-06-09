@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "ATTESTED",
+    "slug": "attested",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#0f1117",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.attested.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "ATTESTED uses your location to find nearby courses and compute real-time weather-adjusted course ratings.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "ATTESTED uses GPS to verify your position on-course for accurate hole-by-hole analysis."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0f1117"
+      },
+      "package": "com.attested.app"
+    },
+    "plugins": [
+      "expo-asset"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "YOUR_EAS_PROJECT_ID"
+      }
+    }
+  }
+}
