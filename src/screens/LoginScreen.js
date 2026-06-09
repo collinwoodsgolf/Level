@@ -146,13 +146,21 @@ export default function LoginScreen({ navigation }) {
               <View style={s.dividerLine} />
             </View>
 
-            {/* Apple Sign In placeholder */}
+            {/* Social sign-in placeholders (production: expo-auth-session / Firebase Auth) */}
             <TouchableOpacity
               style={s.appleBtn}
               onPress={() => Alert.alert('Coming Soon', 'Apple Sign In will be available in the App Store release.')}
               activeOpacity={0.85}
             >
               <Text style={s.appleBtnText}> Continue with Apple</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={s.googleBtn}
+              onPress={() => Alert.alert('Coming Soon', 'Google Sign-In will be available in the App Store release.')}
+              activeOpacity={0.85}
+            >
+              <Text style={s.googleG}>G</Text>
+              <Text style={s.googleBtnText}>Continue with Google</Text>
             </TouchableOpacity>
 
             {/* Explicit toggle button */}
@@ -212,10 +220,18 @@ const s = StyleSheet.create({
   dividerText: { ...FONTS.regular, fontSize: 12, color: COLORS.gray600, marginHorizontal: 12 },
 
   appleBtn: {
-    backgroundColor: COLORS.white, borderRadius: RADIUS.md,
+    backgroundColor: COLORS.black, borderRadius: RADIUS.md,
     padding: 16, alignItems: 'center',
   },
-  appleBtnText: { ...FONTS.bold, fontSize: 16, color: COLORS.black },
+  appleBtnText: { ...FONTS.bold, fontSize: 16, color: COLORS.white },
+
+  googleBtn: {
+    backgroundColor: COLORS.white, borderRadius: RADIUS.md,
+    padding: 16, alignItems: 'center', flexDirection: 'row', justifyContent: 'center',
+    borderWidth: 1, borderColor: COLORS.surfaceBorder, gap: 8,
+  },
+  googleG: { ...FONTS.black, fontSize: 16, color: '#4285F4' },
+  googleBtnText: { ...FONTS.bold, fontSize: 16, color: COLORS.ink },
 
   toggleWrap: { alignItems: 'center', marginTop: 14 },
   toggleText: { ...FONTS.regular, fontSize: 14, color: COLORS.gray400 },

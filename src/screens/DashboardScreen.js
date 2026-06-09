@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, getDifficultyColor, getDifficultyBg } from '../utils/theme';
 import { useStore, SETUP_PRESETS } from '../services/store';
-import { MANHATTAN_WOODS, MANHATTAN_WOODS_HOLES } from '../services/courseData';
+import { sortedCourses, getCourse } from '../services/courses';
 import { computeRating } from '../services/ratingEngine';
 import { fetchWeather, degToCompass } from '../services/weather';
 import TopNav from '../components/TopNav';
@@ -20,6 +20,54 @@ import LiveSGTracker from '../components/LiveSGTracker';
 
 function SectionLabel({ children }) {
   return <Text style={styles.sectionLabel}>{children}</Text>;
+}
+
+/**
+ * Course picker — home course first, then most played, then the rest of
+ * the onboarded catalog. Production: searchable list + GPS "courses near me".
+ */
+function CoursePicker({ selectedId, onSelect }) {
+  return (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.courseRow}>
+      {sortedCourses().map(c => {
+        const on = c.id === selectedId;
+        return (
+          <TouchableOpacity
+            key={c.id}
+            style={[styles.courseChip, on && styles.courseChipOn]}
+            onPress={() => onSelect(c.id)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.courseChipTop}>
+              {c.isHome && <Text style={styles.courseHome}>🏠</Text>}
+              <Text style={[styles.courseName, on && { color: COLORS.white }]} numberOfLines={1}>
+                {c.course.name}
+              </Text>
+              {c.verified && (
+                <View style={[styles.courseVerified, on && { backgroundColor: 'rgba(255,255,255,0.25)' }]}>
+                  <Text style={[styles.courseVerifiedText, on && { color: COLORS.white }]}>✓</Text>
+                </View>
+              )}
+            </View>
+            <Text style={[styles.courseMeta, on && { color: 'rgba(255,255,255,0.75)' }]}>
+              {c.course.location} · {c.playerRounds} rounds
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+      <TouchableOpacity
+        style={styles.courseMore}
+        onPress={() => Alert.alert(
+          'More Courses',
+          'Course search and onboarding requests coming soon. Want your course on Level? Have your pro shop reach out — onboarding takes one morning.',
+        )}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.courseMoreText}>＋</Text>
+        <Text style={styles.courseMoreSub}>More{'\n'}courses</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
 }
 
 function WeatherCard({ weather, onRefresh }) {
@@ -235,13 +283,11 @@ function HoleDifficultyList({ holes, onHoleTap }) {
   );
 }
 
-function TeeSelector({ selected, onSelect }) {
-  const tees = [
-    { key: 'black', label: 'Black', yds: '7,110', color: COLORS.teeBlack },
-    { key: 'gold', label: 'Gold', yds: '6,645', color: COLORS.teeGold },
-    { key: 'blue', label: 'Blue', yds: '6,180', color: COLORS.teeBlue },
-    { key: 'white', label: 'White', yds: '5,520', color: COLORS.teeWhite },
-  ];
+function TeeSelector({ selected, onSelect, teeBoxes }) {
+  const colors = { black: COLORS.teeBlack, gold: COLORS.teeGold, blue: COLORS.teeBlue, white: COLORS.teeWhite };
+  const tees = Object.entries(teeBoxes || {}).map(([key, t]) => ({
+    key, label: t.label, yds: t.yardage.toLocaleString(), color: colors[key] || COLORS.teeBlack,
+  }));
   return (
     <View style={styles.teeRow}>
       {tees.map(t => (
@@ -289,6 +335,9 @@ export default function DashboardScreen({ navigation }) {
   const setTeeBox = useStore(s => s.setSelectedTeeBox);
   const setup = useStore(s => s.setup);
   const applyPreset = useStore(s => s.applyPreset);
+  const selectedCourseId = useStore(s => s.selectedCourseId);
+  const setSelectedCourseId = useStore(s => s.setSelectedCourseId);
+  const { course, holes, verified } = getCourse(selectedCourseId);
   const activeRound = useStore(s => s.activeRound);
   const startRound = useStore(s => s.startRound);
   const endRound = useStore(s => s.endRound);
@@ -298,14 +347,14 @@ export default function DashboardScreen({ navigation }) {
 
   const loadWeather = useCallback(async () => {
     try {
-      const w = await fetchWeather(MANHATTAN_WOODS.lat, MANHATTAN_WOODS.lon);
+      const w = await fetchWeather(course.lat, course.lon);
       setWeather(w);
     } catch (e) {
       setWeatherError(e.message);
     }
-  }, [setWeather, setWeatherError]);
+  }, [setWeather, setWeatherError, course.lat, course.lon]);
 
-  // Initial weather fetch
+  // Initial weather fetch + refetch when the course changes
   useEffect(() => { loadWeather(); }, [loadWeather]);
 
   // Recompute rating when weather or setup changes
@@ -326,12 +375,12 @@ export default function DashboardScreen({ navigation }) {
       tee_adjustments: setup.teeAdjs,
     };
     try {
-      const result = computeRating(conds, MANHATTAN_WOODS, MANHATTAN_WOODS_HOLES);
+      const result = computeRating(conds, course, holes);
       setRating(result);
     } catch (e) {
       console.warn('Rating computation failed:', e.message);
     }
-  }, [weather, setup, teeBox, setRating]);
+  }, [weather, setup, teeBox, setRating, course, holes]);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -344,7 +393,7 @@ export default function DashboardScreen({ navigation }) {
     applyPreset(SETUP_PRESETS[key]);
   };
 
-  const teeInfo = MANHATTAN_WOODS.tee_boxes[teeBox];
+  const teeInfo = course.tee_boxes[teeBox];
 
   const handleStartRound = () => {
     if (!rating) return;
@@ -406,7 +455,7 @@ export default function DashboardScreen({ navigation }) {
       <TopNav
         navigation={navigation}
         title="LEVEL"
-        subtitle={`${MANHATTAN_WOODS.name} · ${MANHATTAN_WOODS.location}`}
+        subtitle={`${course.name} · ${course.location}`}
       />
 
       <ScrollView
@@ -415,6 +464,9 @@ export default function DashboardScreen({ navigation }) {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.green500} />}
         showsVerticalScrollIndicator={false}
       >
+        {/* Course picker — home / most played first */}
+        <CoursePicker selectedId={selectedCourseId} onSelect={setSelectedCourseId} />
+
         {/* Start / active round */}
         <RoundBanner
           rating={rating}
@@ -438,13 +490,13 @@ export default function DashboardScreen({ navigation }) {
 
         {/* Setup */}
         <SectionLabel>TEES & COURSE SETUP</SectionLabel>
-        <TeeSelector selected={teeBox} onSelect={setTeeBox} />
+        <TeeSelector selected={teeBox} onSelect={setTeeBox} teeBoxes={course.tee_boxes} />
         <PresetButtons active={activePreset} onSelect={onPresetSelect} />
 
         {/* Scorecard — static data, always visible */}
         <SectionLabel>SCORECARD</SectionLabel>
         <Scorecard
-          holes={MANHATTAN_WOODS_HOLES}
+          holes={holes}
           teeBox={teeBox}
           teeInfo={teeInfo}
           rating={rating}
@@ -461,7 +513,7 @@ export default function DashboardScreen({ navigation }) {
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            {MANHATTAN_WOODS.name} · Par {MANHATTAN_WOODS.par} · {MANHATTAN_WOODS.architect}, {MANHATTAN_WOODS.year}
+            {course.name} · Par {course.par} · {course.architect}, {course.year}
           </Text>
           <Text style={styles.footerMath}>
             Model: s_ij = θ_i + D_j + ε_ij · v2 corrected coefficients
@@ -478,6 +530,29 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.surface },
   scroll: { flex: 1 },
   scrollContent: { padding: SPACING.lg, paddingBottom: 40, gap: 12 },
+
+  // Course picker
+  courseRow: { gap: 8 },
+  courseChip: {
+    width: 168, backgroundColor: COLORS.surfaceCard, borderRadius: RADIUS.md,
+    borderWidth: 1.5, borderColor: COLORS.surfaceBorder, paddingVertical: 9, paddingHorizontal: 11,
+  },
+  courseChipOn: { backgroundColor: COLORS.green700, borderColor: COLORS.green700 },
+  courseChipTop: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  courseHome: { fontSize: 9 },
+  courseName: { ...FONTS.bold, fontSize: 11.5, color: COLORS.ink, flex: 1 },
+  courseVerified: {
+    width: 14, height: 14, borderRadius: 7, backgroundColor: COLORS.green900,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  courseVerifiedText: { ...FONTS.bold, fontSize: 8, color: COLORS.green400 },
+  courseMeta: { ...FONTS.regular, fontSize: 9, color: COLORS.gray500, marginTop: 3 },
+  courseMore: {
+    width: 64, alignItems: 'center', justifyContent: 'center', borderRadius: RADIUS.md,
+    borderWidth: 1.5, borderColor: COLORS.surfaceBorder, borderStyle: 'dashed',
+  },
+  courseMoreText: { ...FONTS.bold, fontSize: 16, color: COLORS.green600 },
+  courseMoreSub: { ...FONTS.semibold, fontSize: 8, color: COLORS.gray500, textAlign: 'center', marginTop: 2 },
 
   sectionLabel: {
     ...FONTS.bold, fontSize: 11, color: COLORS.gray500,

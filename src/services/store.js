@@ -4,6 +4,7 @@
 import { create } from 'zustand';
 import { MY_ROUNDS, FRIENDS, computeHandicapIndex, roundDifferential } from './social';
 import { aggregateRoundSG } from './strokesGained';
+import { getCourse } from './courses';
 
 export const useStore = create((set, get) => ({
   // Auth
@@ -31,10 +32,11 @@ export const useStore = create((set, get) => ({
   // whole round (handicap + wager terms are known before the first swing).
   activeRound: null,
   startRound: ({ trackSG = false } = {}) => {
-    const { rating, selectedTeeBox, weather } = get();
+    const { rating, selectedTeeBox, weather, selectedCourseId } = get();
     if (!rating) return null;
     const snapshot = {
       id: 'live_' + Date.now(),
+      courseName: getCourse(selectedCourseId).course.name,
       startedAt: new Date().toISOString(),
       teeBox: selectedTeeBox,
       dynamicRating: rating.today_rating,
@@ -74,7 +76,7 @@ export const useStore = create((set, get) => ({
     const round = {
       id: 'r_' + Date.now(),
       date: new Date().toISOString().slice(0, 10),
-      course: 'Manhattan Woods GC',
+      course: activeRound.courseName || 'Manhattan Woods GC',
       tee: activeRound.teeBox.charAt(0).toUpperCase() + activeRound.teeBox.slice(1),
       score: Number(score),
       dynamicRating: activeRound.dynamicRating,
@@ -133,10 +135,14 @@ export const useStore = create((set, get) => ({
   },
   setPref: (key, value) => set(state => ({ prefs: { ...state.prefs, [key]: value } })),
 
-  // Course
-  selectedCourse: null,
+  // Course (home / most-played first; see courses.js)
+  selectedCourseId: 'manhattan-woods',
   selectedTeeBox: 'black',
-  setSelectedCourse: (course) => set({ selectedCourse: course }),
+  setSelectedCourseId: (id) => set({
+    selectedCourseId: id,
+    rating: null,      // force recompute for the new course
+    weather: null,     // refetch at the new course's coordinates
+  }),
   setSelectedTeeBox: (teeBox) => set({ selectedTeeBox: teeBox }),
 
   // Weather
