@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATTESTED — App Preview</title>
+<style>
+  :root{
+    --surface:#FAF7F0; --elevated:#FFFFFF; --card:#FFFFFF; --border:#E6E0D2;
+    --hunter:#355E3B; --hunterD:#2C5134; --g500:#3C6B47; --g400:#27502F;
+    --tint:#E7F0E8; --tint2:#DCEBDF; --chip:#CFE3D4;
+    --ink:#1F2A22; --t2:#5E6B61; --t3:#7C8780; --t4:#A3ADA5;
+    --red:#DA291C; --orange:#D9580C; --amber:#C77F06;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;}
+  body{background:#EFE9DC;color:var(--ink);padding:40px 20px;}
+  .pagehead{text-align:center;margin-bottom:36px;}
+  .pagehead h1{font-weight:900;letter-spacing:6px;font-size:28px;color:var(--hunter);}
+  .pagehead h1 span{color:var(--red);}
+  .pagehead p{color:var(--t2);margin-top:8px;font-size:14px;}
+  .row{display:flex;flex-wrap:wrap;gap:34px;justify-content:center;align-items:flex-start;}
+  .phone{width:340px;background:var(--surface);border:2px solid #d9d2c2;border-radius:44px;overflow:hidden;box-shadow:0 30px 70px rgba(60,50,30,.25);}
+  .screen{height:720px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:var(--surface);}
+  .notch{height:28px;display:flex;justify-content:center;align-items:flex-end;}
+  .notch i{width:110px;height:22px;background:#000;border-radius:0 0 16px 16px;}
+  .cap{text-align:center;color:var(--t3);font-size:12px;font-weight:600;letter-spacing:1px;padding:14px 0 0;text-transform:uppercase;}
+  .scroll{flex:1;overflow:hidden;padding:14px;display:flex;flex-direction:column;gap:10px;}
+
+  /* shared */
+  .logoBadge{position:relative;background:var(--hunter);border-radius:18px;width:64px;height:64px;margin:0 auto;}
+  .logoBadge .green{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:40px;height:13px;border-radius:50%;background:#5FA06C;}
+  .logoBadge .stick{position:absolute;bottom:15px;left:50%;width:2.5px;height:30px;background:#fff;border-radius:2px;}
+  .logoBadge .flag{position:absolute;top:11px;left:33px;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:19px solid var(--red);}
+  .logoBadge .tick{position:absolute;top:6px;left:7px;width:17px;height:17px;border-radius:50%;background:#fff;color:var(--hunterD);font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;}
+  .wordmark{text-align:center;font-weight:900;letter-spacing:4px;font-size:24px;margin-top:12px;color:var(--ink);}
+  .tagline{text-align:center;color:var(--t2);font-size:11px;margin-top:4px;letter-spacing:.5px;}
+  .input{background:#fff;border:1px solid var(--border);border-radius:10px;padding:13px 14px;color:var(--t3);font-size:14px;}
+  .btn{border-radius:10px;padding:13px;text-align:center;font-weight:700;font-size:14px;}
+  .btn.green{background:var(--hunter);color:#fff;}
+  .btn.dark{background:#111;color:#fff;}
+  .card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px;}
+  .seclabel{color:var(--t3);font-size:9.5px;font-weight:700;letter-spacing:1.4px;margin:6px 0 -2px;}
+  .chev{color:var(--t4);}
+
+  /* top nav */
+  .topnav{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);}
+  .topnav .mini{transform:scale(.5);transform-origin:left center;width:34px;height:64px;margin:-16px 0;}
+  .topnav .t{flex:1;margin-left:2px;}
+  .topnav .t b{font-size:15px;letter-spacing:1.5px;font-weight:800;display:block;color:var(--ink);}
+  .topnav .t span{font-size:9px;color:var(--t3);}
+  .avatar{width:32px;height:32px;border-radius:50%;background:var(--hunter);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
+
+  /* tab bar */
+  .tabbar{display:flex;border-top:1px solid var(--border);background:#fff;padding:8px 0 14px;}
+  .tab{flex:1;text-align:center;font-size:10px;font-weight:600;color:var(--t3);}
+  .tab .ic{font-size:17px;display:block;margin-bottom:2px;}
+  .tab.on{color:var(--hunter);}
+
+  /* dashboard */
+  .heroRow{display:flex;gap:7px;}
+  .hero{flex:1;background:#fff;border:1px solid var(--border);border-radius:12px;padding:9px 4px;text-align:center;}
+  .hero .l{font-size:7px;color:var(--t3);font-weight:700;letter-spacing:.5px;}
+  .hero .v{font-size:21px;font-weight:900;margin:3px 0 1px;}
+  .hero .d{font-size:9px;font-weight:700;}
+  .pill{display:inline-block;font-size:7.5px;font-weight:700;border-radius:99px;padding:2px 7px;margin-top:4px;border:1px solid rgba(217,88,12,.35);background:#FBEEDD;color:var(--orange);}
+  .weather{background:var(--tint);border:1px solid rgba(60,107,71,.3);border-radius:12px;padding:11px;}
+  .weather .h{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:700;color:var(--g400);letter-spacing:.5px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--g500);}
+  .weather .stats{display:flex;justify-content:space-between;margin-top:9px;}
+  .ws{text-align:center;flex:1;}
+  .ws b{font-size:16px;font-weight:800;display:block;color:var(--ink);}
+  .ws span{font-size:8px;color:var(--t2);}
+  .tees{display:flex;gap:6px;}
+  .tee{flex:1;text-align:center;border:1.5px solid var(--border);background:#fff;border-radius:9px;padding:7px 0;}
+  .tee b{font-size:9px;display:block;color:var(--ink);}
+  .tee span{font-size:7px;color:var(--t3);}
+  .tee.on{background:#1f2937;border-color:#1f2937;}
+  .tee.on b,.tee.on span{color:#fff;}
+  table.sc{width:100%;border-collapse:collapse;font-size:8.5px;}
+  table.sc td,table.sc th{padding:3.5px 0;text-align:center;border-bottom:1px solid #efe9dc;color:var(--ink);}
+  table.sc th{color:var(--g400);font-weight:800;background:#F1EDE2;}
+  table.sc td:first-child,table.sc th:first-child{color:var(--t3);font-weight:700;text-align:left;padding-left:4px;font-size:7.5px;}
+  table.sc .tot{font-weight:800;}
+  table.sc .eff{color:var(--orange);}
+  .ninelabel{font-size:7.5px;font-weight:800;letter-spacing:1px;color:var(--t4);margin:6px 0 3px;}
+  .cardtitle{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.5px;margin-bottom:4px;}
+
+  .startbar{display:flex;align-items:center;gap:10px;background:var(--hunter);border-radius:12px;padding:10px 13px;color:#fff;}
+  .startbar b{font-size:13px;display:block;}
+  .startbar span{font-size:9px;color:rgba(255,255,255,.8);}
+  .startbar .play{font-size:13px;}
+  .startbar .chevw{font-size:18px;color:rgba(255,255,255,.7);}
+  .taphint{font-size:7px;color:var(--t4);margin-top:4px;}
+  /* insights */
+  .ihead{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px;}
+  .ihead .iv{font-size:24px;font-weight:900;}
+  .ihead .il{font-size:7px;color:var(--t3);font-weight:700;letter-spacing:1px;text-align:center;}
+  .ibadge{border:1px solid rgba(217,88,12,.4);border-radius:99px;padding:4px 9px;font-size:9px;font-weight:700;color:var(--orange);}
+  .lgnd{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0;}
+  .lgnd span{display:flex;align-items:center;gap:4px;background:#F4F1E8;border-radius:99px;padding:3px 7px;font-size:8px;font-weight:600;color:var(--t2);}
+  .lgnd i{width:7px;height:7px;border-radius:50%;display:inline-block;}
+  .hrow{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+  .hrow .hn{font-size:10px;font-weight:800;color:var(--g400);width:16px;}
+  .hrow .hp{font-size:8px;color:var(--t4);width:16px;}
+  .track{flex:1;height:11px;background:#F4F1E8;border-radius:6px;display:flex;overflow:hidden;position:relative;}
+  .track .zero{position:absolute;left:50%;top:0;bottom:0;width:1.5px;background:var(--t4);z-index:2;}
+  .track .nside{width:50%;display:flex;flex-direction:row-reverse;}
+  .track .pside{width:50%;display:flex;}
+  .track b{height:100%;display:block;}
+  .hrow .hd{font-size:9px;font-weight:700;width:32px;text-align:right;}
+  .axl{display:flex;justify-content:space-between;font-size:8px;color:var(--t4);padding:0 36px 3px;}
+  /* wagers */
+  .flabel{font-size:10px;font-weight:600;color:var(--t2);margin:10px 0 6px;}
+  .opps{display:flex;gap:6px;}
+  .opp{width:56px;text-align:center;border:1.5px solid var(--border);border-radius:10px;padding:6px 0;}
+  .opp.on{border-color:var(--hunterD);background:#F4F8F4;}
+  .opp .av{width:26px;height:26px;border-radius:50%;background:var(--chip);color:var(--g400);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 3px;}
+  .opp.on .av{background:var(--hunter);color:#fff;}
+  .opp b{font-size:8.5px;display:block;color:var(--ink);}
+  .opp span{font-size:8.5px;color:var(--t3);font-weight:800;}
+  .stakes{display:flex;gap:6px;}
+  .stake{flex:1;text-align:center;border:1.5px solid var(--border);border-radius:9px;padding:7px 0;font-size:11px;font-weight:700;color:var(--t2);}
+  .stake.on{background:var(--hunter);border-color:var(--hunter);color:#fff;}
+  .fmt{display:flex;align-items:center;gap:8px;border:1.5px solid var(--border);border-radius:9px;padding:7px 10px;margin-bottom:5px;font-size:10.5px;font-weight:600;color:var(--ink);}
+  .fmt.on{border-color:var(--hunterD);background:#F4F8F4;}
+  .fmt i{width:12px;height:12px;border-radius:50%;border:2px solid var(--t4);display:inline-block;}
+  .fmt.on i{border-color:var(--hunter);background:var(--hunter);}
+  .fmt em{margin-left:auto;font-style:normal;font-size:9px;color:var(--t3);}
+  .locknote{background:var(--tint);border-radius:9px;padding:7px;text-align:center;font-size:9.5px;color:var(--t2);margin-top:10px;}
+  .dk{display:flex;gap:10px;align-items:center;background:#F4F1E8;border:1px dashed var(--border);border-radius:12px;padding:11px;margin-top:4px;}
+  .dk b{font-size:11px;color:var(--ink);display:block;}
+  .dk span{font-size:8.5px;color:var(--t3);line-height:1.4;}
+  /* login */
+  .segment{display:flex;background:#fff;border:1px solid var(--border);border-radius:10px;padding:3px;}
+  .segment div{flex:1;text-align:center;padding:8px;border-radius:7px;font-size:12px;font-weight:600;color:var(--t2);}
+  .segment .on{background:var(--hunter);color:#fff;}
+  .forgot{text-align:right;color:var(--g500);font-size:11px;font-weight:600;}
+  .divline{display:flex;align-items:center;gap:10px;color:var(--t4);font-size:10px;}
+  .divline:before,.divline:after{content:"";flex:1;height:1px;background:var(--border);}
+  .toggle{text-align:center;font-size:11px;color:var(--t2);}
+  .toggle b{color:var(--g500);}
+
+  /* menu */
+  .menuwrap{position:absolute;inset:0;background:rgba(40,35,25,.35);z-index:5;}
+  .menu{position:absolute;top:56px;right:12px;width:236px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:5px 0;box-shadow:0 18px 50px rgba(60,50,30,.35);}
+  .mprofile{display:flex;align-items:center;gap:9px;padding:11px 12px;}
+  .mprofile .av{width:34px;height:34px;border-radius:50%;background:var(--hunter);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+  .mprofile b{font-size:12px;display:block;color:var(--ink);}
+  .mprofile span{font-size:9.5px;color:var(--t3);}
+  .hcpb{background:var(--tint2);border-radius:8px;padding:4px 8px;text-align:center;}
+  .hcpb b{color:var(--g400);font-size:12px;display:block;}
+  .hcpb span{color:var(--g500);font-size:6.5px;font-weight:700;letter-spacing:1px;}
+  .mdiv{height:1px;background:var(--border);margin:3px 0;}
+  .mrow{display:flex;align-items:center;gap:9px;padding:10px 13px;font-size:12.5px;color:var(--ink);}
+  .mrow .chev{margin-left:auto;font-size:14px;}
+  .mrow.out{color:var(--red);}
+
+  /* loop */
+  .youcard{display:flex;align-items:center;background:var(--tint);border:1px solid rgba(60,107,71,.3);border-radius:12px;padding:11px 13px;}
+  .youcard .l b{font-size:9px;color:var(--g400);letter-spacing:1px;display:block;}
+  .youcard .l span{font-size:9px;color:var(--t3);}
+  .youcard .v{margin-left:auto;font-size:26px;font-weight:900;color:var(--g400);}
+  .friends{display:flex;gap:7px;overflow:hidden;}
+  .friend{width:62px;flex-shrink:0;text-align:center;background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px 0;}
+  .friend .av{width:30px;height:30px;border-radius:50%;background:var(--chip);color:var(--g400);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;}
+  .friend b{font-size:9px;display:block;color:var(--ink);}
+  .friend span{font-size:9px;color:var(--t2);font-weight:800;}
+  .friend .dn{color:var(--g500);font-size:7px;}
+  .friend .up{color:var(--red);font-size:7px;}
+  .post .ph{display:flex;align-items:center;gap:8px;}
+  .post .av{width:30px;height:30px;border-radius:50%;background:var(--chip);color:var(--g400);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .post .ph b{font-size:12px;display:block;color:var(--ink);}
+  .post .ph span{font-size:9px;color:var(--t3);}
+  .vbadge{margin-left:auto;width:18px;height:18px;border-radius:50%;background:var(--tint2);color:var(--g400);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .scorerow{display:flex;gap:11px;margin-top:10px;align-items:center;}
+  .bigscore{width:62px;height:62px;border-radius:12px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;position:relative;color:var(--ink);}
+  .bigscore i{position:absolute;top:4px;right:6px;font-size:9px;font-style:normal;}
+  .sdet{flex:1;font-size:10px;}
+  .sdet div{display:flex;justify-content:space-between;margin:3px 0;}
+  .sdet .k{color:var(--t3);}
+  .sdet .v{font-weight:700;color:var(--ink);}
+  .caption{font-size:10.5px;color:var(--t2);margin-top:9px;line-height:1.45;}
+  .pactions{display:flex;gap:18px;margin-top:9px;padding-top:9px;border-top:1px solid var(--border);font-size:10px;color:var(--t2);font-weight:600;}
+  .fab{position:absolute;bottom:74px;left:50%;transform:translateX(-50%);background:var(--hunter);color:#fff;border-radius:99px;padding:10px 18px;font-weight:700;font-size:12px;box-shadow:0 8px 22px rgba(60,50,30,.35);}
+
+  /* round history */
+  .subhead{display:flex;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border);background:var(--surface);}
+  .subhead .back{color:var(--g500);font-size:22px;width:30px;}
+  .subhead b{flex:1;text-align:center;font-size:14px;margin-right:30px;color:var(--ink);}
+  .sumstrip{display:flex;background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 0;}
+  .sumstrip div{flex:1;text-align:center;}
+  .sumstrip b{color:var(--g400);font-size:16px;font-weight:800;display:block;}
+  .sumstrip span{font-size:6.5px;color:var(--t3);font-weight:700;letter-spacing:1px;}
+  .rh .top{display:flex;align-items:flex-start;}
+  .rh .top b{font-size:12px;display:block;color:var(--ink);}
+  .rh .top span{font-size:9px;color:var(--t3);}
+  .abadge{margin-left:auto;background:var(--tint2);color:var(--g400);font-size:7.5px;font-weight:700;border-radius:99px;padding:3px 7px;letter-spacing:.5px;}
+  .rstats{display:flex;margin-top:10px;}
+  .rstats div{flex:1;text-align:center;border-right:1px solid var(--border);}
+  .rstats div:last-child{border-right:none;}
+  .rstats b{font-size:15px;font-weight:800;display:block;color:var(--ink);}
+  .rstats span{font-size:6px;color:var(--t3);font-weight:700;letter-spacing:.7px;}
+  .note{font-size:8.5px;color:var(--t4);text-align:center;line-height:1.4;}
+</style>
+</head>
+<body>
+
+<div class="pagehead">
+  <h1>ATTESTED <span>·</span> APP PREVIEW</h1>
+  <p>Creme &amp; hunter green theme with Tiger-Sunday red · June 2026</p>
+</div>
+
+<div class="row">
+
+  <!-- LOGIN -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="scroll" style="justify-content:center;gap:12px;">
+        <div class="logoBadge"><span class="tick">✓</span><span class="green"></span><span class="stick"></span><span class="flag"></span></div>
+        <div class="wordmark">ATTESTED</div>
+        <div class="tagline">Dynamic Course Intelligence</div>
+        <div style="height:8px"></div>
+        <div class="segment"><div class="on">Sign In</div><div>Sign Up</div></div>
+        <div class="input">Email</div>
+        <div class="input">Password</div>
+        <div class="forgot">Forgot Password?</div>
+        <div class="btn green">Sign In</div>
+        <div class="divline">or</div>
+        <div class="btn dark"> Continue with Apple</div>
+        <div class="toggle">Don't have an account? <b>Sign Up</b></div>
+      </div>
+    </div></div>
+    <div class="cap">Login · forgot password + sign up</div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="topnav">
+        <div class="logoBadge mini"><span class="tick">✓</span><span class="green"></span><span class="stick"></span><span class="flag"></span></div>
+        <div class="t"><b>ATTESTED</b><span>Manhattan Woods GC · West Nyack, NY</span></div>
+        <div class="avatar">C</div>
+      </div>
+      <div class="scroll">
+        <div class="startbar"><span class="play">▶</span><div style="flex:1"><b>Start Round</b><span>Capture &amp; lock today's rating — 76.8 / 146</span></div><span class="chevw">›</span></div>
+        <div class="heroRow">
+          <div class="hero" style="border-color:rgba(217,88,12,.35)"><div class="l">TODAY'S RATING</div><div class="v" style="color:var(--orange)">76.8</div><div class="d" style="color:var(--orange)">+1.8 vs static</div><div class="pill">Playing Tough</div><div class="taphint">Tap for factor charts ›</div></div>
+          <div class="hero"><div class="l">USGA STATIC</div><div class="v" style="color:var(--t2)">75.0</div><div class="d" style="color:var(--t3)">Slope 141</div></div>
+          <div class="hero"><div class="l">TODAY'S SLOPE</div><div class="v" style="color:var(--red)">146</div><div class="d" style="color:var(--red)">+5</div></div>
+        </div>
+        <div class="weather">
+          <div class="h"><span class="dot"></span> LIVE — OPEN-METEO <span style="margin-left:auto;color:var(--g500)">↻ Refresh</span></div>
+          <div class="stats">
+            <div class="ws"><b>68°</b><span>Partly cloudy</span></div>
+            <div class="ws"><b>14</b><span>mph wind · G22</span></div>
+            <div class="ws"><b>NW</b><span>wind from</span></div>
+            <div class="ws"><b>54%</b><span>humidity</span></div>
+          </div>
+        </div>
+        <div class="seclabel">SCORECARD</div>
+        <div class="card">
+          <div class="cardtitle">SCORECARD &nbsp;·&nbsp; Black · 7,110 yds · 75.0/141</div>
+          <div class="ninelabel">FRONT NINE</div>
+          <table class="sc">
+            <tr><th>HOLE</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>OUT</th></tr>
+            <tr><td>PAR</td><td>4</td><td>5</td><td>3</td><td>4</td><td>4</td><td>5</td><td>4</td><td>3</td><td>4</td><td class="tot">36</td></tr>
+            <tr><td>YDS</td><td>405</td><td>535</td><td>185</td><td>440</td><td>390</td><td>555</td><td>415</td><td>200</td><td>360</td><td class="tot">3485</td></tr>
+            <tr><td style="color:var(--g500)">EFF</td><td class="eff">418</td><td class="eff">549</td><td class="eff">191</td><td class="eff">462</td><td>388</td><td class="eff">571</td><td class="eff">434</td><td class="eff">208</td><td>355</td><td class="tot" style="color:var(--g400)">3576</td></tr>
+            <tr><td>HCP</td><td>9</td><td>5</td><td>15</td><td>1</td><td>11</td><td>7</td><td>3</td><td>17</td><td>13</td><td></td></tr>
+          </table>
+          <div class="ninelabel">BACK NINE</div>
+          <table class="sc">
+            <tr><th>HOLE</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>IN</th></tr>
+            <tr><td>PAR</td><td>4</td><td>4</td><td>3</td><td>5</td><td>4</td><td>5</td><td>4</td><td>3</td><td>4</td><td class="tot">36</td></tr>
+            <tr><td>YDS</td><td>456</td><td>415</td><td>181</td><td>550</td><td>460</td><td>491</td><td>453</td><td>198</td><td>421</td><td class="tot">3625</td></tr>
+            <tr><td style="color:var(--g500)">EFF</td><td class="eff">469</td><td class="eff">427</td><td>179</td><td class="eff">566</td><td class="eff">484</td><td class="eff">503</td><td class="eff">466</td><td>193</td><td class="eff">437</td><td class="tot" style="color:var(--g400)">3724</td></tr>
+            <tr><td>HCP</td><td>10</td><td>12</td><td>18</td><td>4</td><td>2</td><td>14</td><td>8</td><td>16</td><td>6</td><td></td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tab on"><span class="ic">⛳</span>Ratings</div>
+        <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">💰</span>Wagers</div>
+      </div>
+    </div></div>
+    <div class="cap">Dashboard · front 9 + back 9 · wind as compass</div>
+  </div>
+
+  <!-- MENU OPEN -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="topnav">
+        <div class="logoBadge mini"><span class="tick">✓</span><span class="green"></span><span class="stick"></span><span class="flag"></span></div>
+        <div class="t"><b>ATTESTED</b><span>Manhattan Woods GC · West Nyack, NY</span></div>
+        <div class="avatar">C</div>
+      </div>
+      <div class="scroll" style="filter:brightness(.92) saturate(.9)">
+        <div class="heroRow">
+          <div class="hero" style="border-color:rgba(217,88,12,.35)"><div class="l">TODAY'S RATING</div><div class="v" style="color:var(--orange)">76.8</div><div class="d" style="color:var(--orange)">+1.8 vs static</div></div>
+          <div class="hero"><div class="l">USGA STATIC</div><div class="v" style="color:var(--t2)">75.0</div><div class="d" style="color:var(--t3)">Slope 141</div></div>
+          <div class="hero"><div class="l">TODAY'S SLOPE</div><div class="v" style="color:var(--red)">146</div><div class="d" style="color:var(--red)">+5</div></div>
+        </div>
+        <div class="weather"><div class="h"><span class="dot"></span> LIVE — OPEN-METEO</div></div>
+        <div class="card" style="height:260px"></div>
+      </div>
+      <div class="menuwrap">
+        <div class="menu">
+          <div class="mprofile">
+            <div class="av">C</div>
+            <div style="flex:1"><b>Collin</b><span>info@collinwoodsgolf.com</span></div>
+            <div class="hcpb"><b>8.4</b><span>HCP</span></div>
+          </div>
+          <div class="mdiv"></div>
+          <div class="mrow">👤 Account Information <span class="chev">›</span></div>
+          <div class="mrow">💳 Billing <span class="chev">›</span></div>
+          <div class="mrow">⚙️ Settings <span class="chev">›</span></div>
+          <div class="mrow">🗂 Round History <span class="chev">›</span></div>
+          <div class="mdiv"></div>
+          <div class="mrow out">↩︎ Sign Out</div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tab on"><span class="ic">⛳</span>Ratings</div>
+        <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">💰</span>Wagers</div>
+      </div>
+    </div></div>
+    <div class="cap">Top-right account menu</div>
+  </div>
+
+  <!-- THE LOOP -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="topnav">
+        <div class="logoBadge mini"><span class="tick">✓</span><span class="green"></span><span class="stick"></span><span class="flag"></span></div>
+        <div class="t"><b>THE LOOP</b><span>Your golf circle, in the loop</span></div>
+        <div class="avatar">C</div>
+      </div>
+      <div class="scroll">
+        <div class="youcard">
+          <div class="l"><b>YOUR DYNAMIC HANDICAP</b><span>Best 8 of last 20 · vs dynamic rating</span></div>
+          <div class="v">8.4</div>
+        </div>
+        <div class="seclabel" style="display:flex;justify-content:space-between">FRIENDS <span style="color:var(--g500);letter-spacing:0">+ Add</span></div>
+        <div class="friends">
+          <div class="friend"><div class="av">MC</div><b>Marcus</b><span>4.2</span><span class="dn">▼</span></div>
+          <div class="friend"><div class="av">SR</div><b>Sofia</b><span>11.8</span><span class="dn">▼</span></div>
+          <div class="friend"><div class="av">JW</div><b>Jake</b><span>7.5</span><span class="up">▲</span></div>
+          <div class="friend"><div class="av">PP</div><b>Priya</b><span>15.1</span><span class="dn">▼</span></div>
+          <div class="friend"><div class="av">TO</div><b>Tom</b><span>2.9</span></div>
+        </div>
+        <div class="seclabel">RECENT ROUNDS</div>
+        <div class="card post">
+          <div class="ph"><div class="av">TO</div><div><b>Tom Okafor</b><span>2d ago · Manhattan Woods GC · Black tees</span></div><div class="vbadge">✓</div></div>
+          <div class="scorerow">
+            <div class="bigscore">71<i>🔥</i></div>
+            <div class="sdet">
+              <div><span class="k">Course played to</span><span class="v" style="color:var(--orange)">75.4 / 143</span></div>
+              <div><span class="k">Static rating</span><span class="v">75.0</span></div>
+              <div><span class="k">Differential</span><span class="v" style="color:var(--g500)">−3.5</span></div>
+            </div>
+          </div>
+          <div class="caption">Under the dynamic rating. Best ball-striking day of the year.</div>
+          <div class="pactions"><span>🤜 34 fist bumps</span><span>💬 11</span></div>
+        </div>
+        <div class="card post">
+          <div class="ph"><div class="av">MC</div><div><b>Marcus Chen</b><span>2h ago · Manhattan Woods GC · Black tees</span></div><div class="vbadge">✓</div></div>
+          <div class="scorerow">
+            <div class="bigscore">76<i>🔥</i></div>
+            <div class="sdet">
+              <div><span class="k">Course played to</span><span class="v" style="color:var(--orange)">76.8 / 146</span></div>
+              <div><span class="k">Static rating</span><span class="v">75.0</span></div>
+              <div><span class="k">Differential</span><span class="v" style="color:var(--g500)">−0.6</span></div>
+            </div>
+          </div>
+          <div class="caption">Survived the gusts. That dynamic rating earned every tenth today.</div>
+          <div class="pactions"><span>🤜 12 fist bumps</span><span>💬 4</span></div>
+        </div>
+      </div>
+      <div class="fab">＋ Share Round</div>
+      <div class="tabbar">
+        <div class="tab"><span class="ic">⛳</span>Ratings</div>
+        <div class="tab on"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab"><span class="ic">💰</span>Wagers</div>
+      </div>
+    </div></div>
+    <div class="cap">The Loop · social hub</div>
+  </div>
+
+  <!-- ROUND HISTORY -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="subhead"><span class="back">‹</span><b>Round History</b></div>
+      <div class="scroll">
+        <div class="sumstrip">
+          <div><b>8.4</b><span>HANDICAP</span></div>
+          <div><b>6</b><span>ROUNDS</span></div>
+          <div><b>82.5</b><span>AVG SCORE</span></div>
+          <div><b>+4.4</b><span>BEST DIFF</span></div>
+        </div>
+        <div class="note">Differentials are computed against the dynamic rating the day you played — tough days count.</div>
+        <div class="card rh">
+          <div class="top"><div><b>Manhattan Woods GC</b><span>Jun 7, 2026 · Black tees · 18 mph gusts, firm</span></div><div class="abadge">✓ ATTESTED</div></div>
+          <div class="rstats">
+            <div><b>84</b><span>SCORE</span></div>
+            <div><b style="color:var(--orange)">76.8</b><span>DYN RATING</span></div>
+            <div><b>146</b><span>DYN SLOPE</span></div>
+            <div><b style="color:var(--amber)">+5.6</b><span>DIFFERENTIAL</span></div>
+          </div>
+        </div>
+        <div class="card rh">
+          <div class="top"><div><b>Manhattan Woods GC</b><span>May 31, 2026 · Black tees · Calm, 72°F</span></div><div class="abadge">✓ ATTESTED</div></div>
+          <div class="rstats">
+            <div><b>81</b><span>SCORE</span></div>
+            <div><b style="color:var(--g500)">74.6</b><span>DYN RATING</span></div>
+            <div><b>139</b><span>DYN SLOPE</span></div>
+            <div><b style="color:var(--amber)">+5.2</b><span>DIFFERENTIAL</span></div>
+          </div>
+        </div>
+        <div class="card rh">
+          <div class="top"><div><b>Manhattan Woods GC</b><span>May 24, 2026 · Gold tees · Light rain</span></div><div class="abadge">✓ ATTESTED</div></div>
+          <div class="rstats">
+            <div><b>79</b><span>SCORE</span></div>
+            <div><b style="color:var(--orange)">73.4</b><span>DYN RATING</span></div>
+            <div><b>137</b><span>DYN SLOPE</span></div>
+            <div><b style="color:var(--g500)">+4.6</b><span>DIFFERENTIAL</span></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+    <div class="cap">Round history · dynamic differentials</div>
+  </div>
+
+  <!-- RATING INSIGHTS -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="subhead"><span class="back">‹</span><b>Rating Insights</b></div>
+      <div class="scroll">
+        <div class="ihead">
+          <div><div class="iv" style="color:var(--orange)">76.8</div><div class="il">TODAY</div></div>
+          <span style="color:var(--t4);font-size:11px">vs</span>
+          <div><div class="iv" style="color:var(--t2)">75.0</div><div class="il">STATIC</div></div>
+          <div class="ibadge">+1.8 · Playing Tough</div>
+        </div>
+        <div class="card">
+          <div class="cardtitle">PER-HOLE FACTOR IMPACT</div>
+          <div class="lgnd"><span><i style="background:#2563EB"></i>Wind</span><span><i style="background:#7C3AED"></i>X-Wind</span><span><i style="background:#0E7490"></i>Temp</span><span><i style="background:#A16207"></i>Tees</span><span><i style="background:#355E3B"></i>Greens</span><span><i style="background:#0891B2"></i>Rain</span><span><i style="background:#65A30D"></i>Rough</span><span><i style="background:#92400E"></i>Firm</span></div>
+          <div class="axl"><span>easier ←</span><span>→ harder</span></div>
+          <div class="hrow"><span class="hn">1</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:7.5%;background:#2563EB"></b></div><div class="zero"></div><div class="pside"><b style="width:18.4%;background:#0891B2"></b><b style="width:10.3%;background:#7C3AED"></b><b style="width:16.8%;background:#A16207"></b></div></div><span class="hd" style="color:var(--orange)">+0.31</span></div><div class="hrow"><span class="hn">2</span><span class="hp">P5</span><div class="track"><div class="nside"><b style="width:7.7%;background:#7C3AED"></b></div><div class="zero"></div><div class="pside"><b style="width:8.9%;background:#A16207"></b><b style="width:6.0%;background:#2563EB"></b><b style="width:6.1%;background:#65A30D"></b></div></div><span class="hd" style="color:var(--t3)">+0.18</span></div><div class="hrow"><span class="hn">3</span><span class="hp">P3</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:5.7%;background:#2563EB"></b><b style="width:8.9%;background:#355E3B"></b><b style="width:3.9%;background:#65A30D"></b></div></div><span class="hd" style="color:var(--t3)">+0.12</span></div><div class="hrow"><span class="hn">4</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:28.3%;background:#355E3B"></b><b style="width:29.0%;background:#A16207"></b><b style="width:28.7%;background:#7C3AED"></b></div></div><span class="hd" style="color:var(--orange)">+0.52</span></div><div class="hrow"><span class="hn">5</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:2.8%;background:#7C3AED"></b><b style="width:2.1%;background:#355E3B"></b></div><div class="zero"></div><div class="pside"><b style="width:4.2%;background:#7C3AED"></b></div></div><span class="hd" style="color:var(--g500)">−0.04</span></div><div class="hrow"><span class="hn">6</span><span class="hp">P5</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:15.0%;background:#7C3AED"></b><b style="width:13.6%;background:#355E3B"></b><b style="width:14.0%;background:#2563EB"></b></div></div><span class="hd" style="color:var(--t3)">+0.26</span></div><div class="hrow"><span class="hn">7</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:20.4%;background:#92400E"></b><b style="width:18.1%;background:#355E3B"></b><b style="width:16.8%;background:#A16207"></b></div></div><span class="hd" style="color:var(--orange)">+0.44</span></div><div class="hrow"><span class="hn">8</span><span class="hp">P3</span><div class="track"><div class="nside"><b style="width:2.7%;background:#7C3AED"></b></div><div class="zero"></div><div class="pside"><b style="width:8.0%;background:#7C3AED"></b><b style="width:10.4%;background:#355E3B"></b><b style="width:9.4%;background:#0E7490"></b></div></div><span class="hd" style="color:var(--t3)">+0.15</span></div><div class="hrow"><span class="hn">9</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:6.3%;background:#65A30D"></b><b style="width:4.1%;background:#7C3AED"></b></div><div class="zero"></div><div class="pside"><b style="width:3.7%;background:#92400E"></b></div></div><span class="hd" style="color:var(--g500)">−0.08</span></div><div class="hrow"><span class="hn">10</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:19.5%;background:#7C3AED"></b><b style="width:24.3%;background:#65A30D"></b><b style="width:15.4%;background:#355E3B"></b></div></div><span class="hd" style="color:var(--orange)">+0.35</span></div><div class="hrow"><span class="hn">11</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:3.3%;background:#92400E"></b><b style="width:3.4%;background:#355E3B"></b><b style="width:4.2%;background:#A16207"></b></div></div><span class="hd" style="color:var(--t3)">+0.10</span></div><div class="hrow"><span class="hn">12</span><span class="hp">P3</span><div class="track"><div class="nside"><b style="width:1.6%;background:#7C3AED"></b><b style="width:1.2%;background:#2563EB"></b></div><div class="zero"></div><div class="pside"><b style="width:3.1%;background:#92400E"></b></div></div><span class="hd" style="color:var(--g500)">−0.02</span></div><div class="hrow"><span class="hn">13</span><span class="hp">P5</span><div class="track"><div class="nside"><b style="width:3.3%;background:#2563EB"></b></div><div class="zero"></div><div class="pside"><b style="width:9.0%;background:#65A30D"></b><b style="width:14.7%;background:#0891B2"></b><b style="width:10.9%;background:#0E7490"></b></div></div><span class="hd" style="color:var(--t3)">+0.29</span></div><div class="hrow"><span class="hn">14</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:4.4%;background:#92400E"></b></div><div class="zero"></div><div class="pside"><b style="width:20.2%;background:#355E3B"></b><b style="width:23.3%;background:#7C3AED"></b><b style="width:33.9%;background:#0891B2"></b></div></div><span class="hd" style="color:var(--orange)">+0.49</span></div><div class="hrow"><span class="hn">15</span><span class="hp">P5</span><div class="track"><div class="nside"><b style="width:7.7%;background:#65A30D"></b></div><div class="zero"></div><div class="pside"><b style="width:5.5%;background:#355E3B"></b><b style="width:3.4%;background:#7C3AED"></b><b style="width:3.9%;background:#A16207"></b></div></div><span class="hd" style="color:var(--t3)">+0.08</span></div><div class="hrow"><span class="hn">16</span><span class="hp">P4</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:8.1%;background:#0E7490"></b><b style="width:13.1%;background:#2563EB"></b><b style="width:6.7%;background:#7C3AED"></b></div></div><span class="hd" style="color:var(--t3)">+0.22</span></div><div class="hrow"><span class="hn">17</span><span class="hp">P3</span><div class="track"><div class="nside"></div><div class="zero"></div><div class="pside"><b style="width:1.8%;background:#0E7490"></b><b style="width:2.9%;background:#92400E"></b><b style="width:2.8%;background:#65A30D"></b></div></div><span class="hd" style="color:var(--t3)">+0.06</span></div><div class="hrow"><span class="hn">18</span><span class="hp">P4</span><div class="track"><div class="nside"><b style="width:4.4%;background:#65A30D"></b></div><div class="zero"></div><div class="pside"><b style="width:13.8%;background:#0E7490"></b><b style="width:11.3%;background:#0891B2"></b><b style="width:12.0%;background:#355E3B"></b></div></div><span class="hd" style="color:var(--t3)">+0.19</span></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="cap">Rating insights · tap the rating to open</div>
+  </div>
+
+  <!-- WAGERS -->
+  <div>
+    <div class="phone"><div class="screen">
+      <div class="notch"><i></i></div>
+      <div class="topnav">
+        <div class="logoBadge mini"><span class="tick">✓</span><span class="green"></span><span class="stick"></span><span class="flag"></span></div>
+        <div class="t"><b>WAGERS</b><span>Attested peer-to-peer matches</span></div>
+        <div class="avatar">C</div>
+      </div>
+      <div class="scroll">
+        <div class="card">
+          <div class="cardtitle">NEW MATCH</div>
+          <div class="flabel">Opponent</div>
+          <div class="opps">
+            <div class="opp on"><div class="av">MC</div><b>Marcus</b><span>4.2</span></div>
+            <div class="opp"><div class="av">SR</div><b>Sofia</b><span>11.8</span></div>
+            <div class="opp"><div class="av">JW</div><b>Jake</b><span>7.5</span></div>
+            <div class="opp"><div class="av">TO</div><b>Tom</b><span>2.9</span></div>
+          </div>
+          <div class="flabel">Stake</div>
+          <div class="stakes"><div class="stake">$5</div><div class="stake on">$10</div><div class="stake">$20</div><div class="stake">$50</div></div>
+          <div class="flabel">Format</div>
+          <div class="fmt on"><i></i>Net Stroke Play<em>Dynamic handicaps applied</em></div>
+          <div class="fmt"><i></i>Match Play<em>Hole by hole</em></div>
+          <div class="fmt"><i></i>Skins<em>Carry-overs</em></div>
+          <div class="locknote">🔒 Locks today's rating: <b style="color:var(--g400)">76.8 / 146</b></div>
+          <div class="btn green" style="margin-top:9px;font-size:12px;">Start Match — Both Players Tap In</div>
+        </div>
+        <div class="dk"><span style="font-size:20px">🛡️</span><div><b>Verified Betting — Coming Soon</b><span>Planned sportsbook integration (e.g. DraftKings) for escrowed, verifiable wagers backed by GPS-attested scores and locked dynamic ratings.</span></div></div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><span class="ic">⛳</span>Ratings</div>
+        <div class="tab"><span class="ic">🤝</span>The Loop</div>
+        <div class="tab on"><span class="ic">💰</span>Wagers</div>
+      </div>
+    </div></div>
+    <div class="cap">Wagers · locked-rating matches</div>
+  </div>
+
+</div>
+</body>
+</html>
