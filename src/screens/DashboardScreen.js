@@ -10,7 +10,7 @@ import {
 import { COLORS, FONTS, SPACING, RADIUS, getDifficultyColor, getDifficultyBg } from '../utils/theme';
 import { useStore, SETUP_PRESETS } from '../services/store';
 import { sortedCourses, getCourse } from '../services/courses';
-import { computeRating } from '../services/ratingEngine';
+import { computeRatingML } from '../services/mlRating';
 import { fetchWeather, degToCompass } from '../services/weather';
 import TopNav from '../components/TopNav';
 import Scorecard from '../components/Scorecard';
@@ -135,6 +135,11 @@ function RatingHero({ rating, onRatingPress }) {
         <View style={[styles.diffBadge, { backgroundColor: getDifficultyBg(rating.rating_delta), borderColor: dc + '44' }]}>
           <Text style={[styles.diffBadgeText, { color: dc }]}>{rating.difficulty_label}</Text>
         </View>
+        {rating.ml?.enabled && (
+          <Text style={styles.mlBadge}>
+            🧠 ML-tuned {rating.ml.correction >= 0 ? '+' : ''}{rating.ml.correction.toFixed(1)} · {rating.ml.observations} rds
+          </Text>
+        )}
         <Text style={styles.heroTapHint}>Tap for factor charts ›</Text>
       </TouchableOpacity>
       <View style={styles.heroCard}>
@@ -337,6 +342,7 @@ export default function DashboardScreen({ navigation }) {
   const applyPreset = useStore(s => s.applyPreset);
   const selectedCourseId = useStore(s => s.selectedCourseId);
   const setSelectedCourseId = useStore(s => s.setSelectedCourseId);
+  const learning = useStore(s => s.learning);
   const { course, holes, verified } = getCourse(selectedCourseId);
   const activeRound = useStore(s => s.activeRound);
   const startRound = useStore(s => s.startRound);
@@ -375,12 +381,14 @@ export default function DashboardScreen({ navigation }) {
       tee_adjustments: setup.teeAdjs,
     };
     try {
-      const result = computeRating(conds, course, holes);
+      // Physics prior + per-course learned state (calibration multipliers
+      // and the online ML residual model) — refines with every posted round.
+      const result = computeRatingML(conds, course, holes, learning[selectedCourseId]);
       setRating(result);
     } catch (e) {
       console.warn('Rating computation failed:', e.message);
     }
-  }, [weather, setup, teeBox, setRating, course, holes]);
+  }, [weather, setup, teeBox, setRating, course, holes, learning, selectedCourseId]);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -516,7 +524,7 @@ export default function DashboardScreen({ navigation }) {
             {course.name} · Par {course.par} · {course.architect}, {course.year}
           </Text>
           <Text style={styles.footerMath}>
-            Model: s_ij = θ_i + D_j + ε_ij · v2 corrected coefficients
+            Model: s_ij = θ_i + D_j + ε_ij · physics prior + online ML refinement
           </Text>
         </View>
       </ScrollView>
@@ -612,6 +620,7 @@ const styles = StyleSheet.create({
   heroSub: { ...FONTS.regular, fontSize: 11, color: COLORS.gray500, marginTop: 4 },
   diffBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: RADIUS.full, borderWidth: 1, marginTop: 6 },
   diffBadgeText: { ...FONTS.bold, fontSize: 10 },
+  mlBadge: { ...FONTS.semibold, fontSize: 8.5, color: COLORS.green400, marginTop: 5 },
   heroTapHint: { ...FONTS.regular, fontSize: 8.5, color: COLORS.gray600, marginTop: 6 },
 
   // Start / active round banner

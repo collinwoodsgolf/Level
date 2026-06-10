@@ -5,6 +5,7 @@ import { create } from 'zustand';
 import { MY_ROUNDS, FRIENDS, computeHandicapIndex, roundDifferential } from './social';
 import { aggregateRoundSG } from './strokesGained';
 import { getCourse } from './courses';
+import { learnFromRound, learnFromField } from './mlRating';
 
 export const useStore = create((set, get) => ({
   // Auth
@@ -36,6 +37,7 @@ export const useStore = create((set, get) => ({
     if (!rating) return null;
     const snapshot = {
       id: 'live_' + Date.now(),
+      courseId: selectedCourseId,
       courseName: getCourse(selectedCourseId).course.name,
       startedAt: new Date().toISOString(),
       teeBox: selectedTeeBox,
@@ -48,6 +50,13 @@ export const useStore = create((set, get) => ({
         ? `${Math.round(weather.temperature_f)}°F · ${Math.round(weather.wind_speed_mph)} mph wind`
         : 'Conditions unavailable',
       locked: true,
+      // ML training snapshot — the exact features and (pre-ML) physics
+      // prediction this round will be scored against when it's posted.
+      mlSnapshot: rating.ml ? {
+        features: rating.ml.features,
+        physicsDelta: rating.ml.physics_delta,
+        factorSummary: rating.factor_summary,
+      } : null,
       // Strokes-gained tracking (opt-in). Per-hole expected strokes are
       // locked with the snapshot so SG respects today's conditions.
       sgEnabled: trackSG,
@@ -71,7 +80,7 @@ export const useStore = create((set, get) => ({
     };
   }),
   endRound: (score) => {
-    const { activeRound } = get();
+    const { activeRound, learning, rounds } = get();
     if (!activeRound || !score) return null;
     const round = {
       id: 'r_' + Date.now(),
@@ -90,10 +99,44 @@ export const useStore = create((set, get) => ({
         ? aggregateRoundSG(activeRound.holeStats, activeRound.holeMeta)
         : null,
     };
-    set(state => ({ rounds: [round, ...state.rounds], activeRound: null }));
+    // Online learning: every posted round refines this course's ML model
+    // and factor calibration (handicap estimated from history pre-round).
+    let nextLearning = learning;
+    if (activeRound.mlSnapshot && activeRound.courseId) {
+      const updated = learnFromRound(learning[activeRound.courseId], {
+        score: Number(score),
+        handicap: computeHandicapIndex(rounds) ?? 0,
+        staticRating: activeRound.staticRating,
+        staticSlope: activeRound.staticSlope,
+        ...activeRound.mlSnapshot,
+      });
+      if (updated) nextLearning = { ...learning, [activeRound.courseId]: updated };
+    }
+    set(state => ({
+      rounds: [round, ...state.rounds],
+      activeRound: null,
+      learning: nextLearning,
+    }));
     return round;
   },
   cancelRound: () => set({ activeRound: null }),
+
+  // ML learning state, per course: { model, calibration, roundsAbsorbed }.
+  // Refined on every posted round (endRound) and every absorbed field-day;
+  // computeRatingML reads it so today's rating reflects everything learned.
+  learning: {},
+  // Backend hook: absorb everyone who posted at this course today as one
+  // low-noise observation (e.g. from The Loop feed / course-day rollups).
+  absorbFieldRounds: (courseId, fieldRounds) => set(state => {
+    const { rating, selectedCourseId } = state;
+    if (!rating?.ml || courseId !== selectedCourseId) return {};
+    const updated = learnFromField(state.learning[courseId], fieldRounds, {
+      physicsDelta: rating.ml.physics_delta,
+      features: rating.ml.features,
+      factorSummary: rating.factor_summary,
+    });
+    return updated ? { learning: { ...state.learning, [courseId]: updated } } : {};
+  }),
 
   // Peer-to-peer wagers (mock — DraftKings integration planned)
   wagers: [],

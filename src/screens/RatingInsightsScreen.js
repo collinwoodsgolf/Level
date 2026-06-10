@@ -70,6 +70,73 @@ function FactorTotals({ factors }) {
   );
 }
 
+function MLStat({ value, label }) {
+  return (
+    <View style={s.mlStat}>
+      <Text style={s.mlStatValue}>{value}</Text>
+      <Text style={s.mlStatLabel}>{label}</Text>
+    </View>
+  );
+}
+
+/** What the online ML layer has learned about this course so far */
+function MLCard({ ml }) {
+  if (!ml) return null;
+  if (!ml.enabled) {
+    return (
+      <View style={s.card}>
+        <Text style={s.cardTitle}>MACHINE LEARNING REFINEMENT</Text>
+        <Text style={s.hint}>
+          No rounds absorbed at this course yet — today's number is the pure
+          physics model. Every attested round teaches the engine how conditions
+          actually play here, and the rating sharpens automatically as scores
+          come in.
+        </Text>
+      </View>
+    );
+  }
+  const adjusted = (ml.factor_adjustments || [])
+    .filter(a => Math.abs(a.multiplier - 1) >= 0.03)
+    .slice(0, 4);
+  return (
+    <View style={s.card}>
+      <Text style={s.cardTitle}>MACHINE LEARNING REFINEMENT</Text>
+      <View style={s.mlStatsRow}>
+        <MLStat value={String(ml.observations)} label="rounds absorbed" />
+        <MLStat
+          value={`${ml.correction >= 0 ? '+' : ''}${ml.correction.toFixed(1)}`}
+          label="today's correction"
+        />
+        <MLStat value={`±${ml.se ?? '—'}`} label="uncertainty" />
+        <MLStat value={`${Math.round((ml.weight || 0) * 100)}%`} label="model trust" />
+      </View>
+      {adjusted.length > 0 && (
+        <View style={s.mlAdjBlock}>
+          <Text style={s.hint}>
+            Learned factor scaling vs the physics prior (×1.00 = physics had it right):
+          </Text>
+          {adjusted.map(a => (
+            <View key={a.key} style={s.mlAdjRow}>
+              <View style={[s.legendDot, { backgroundColor: FACTOR_META[a.key]?.color || COLORS.gray500 }]} />
+              <Text style={s.mlAdjLabel}>{FACTOR_META[a.key]?.label || a.key}</Text>
+              <Text style={[s.mlAdjValue, {
+                color: a.multiplier > 1 ? COLORS.red500 : COLORS.green500,
+              }]}>
+                ×{a.multiplier.toFixed(2)}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
+      <Text style={s.hint}>
+        Physics predicted {ml.physics_delta >= 0 ? '+' : ''}{ml.physics_delta.toFixed(1)} vs
+        static; the model corrected it by {ml.correction >= 0 ? '+' : ''}{ml.correction.toFixed(1)} strokes
+        based on how rounds have actually scored here in similar conditions.
+      </Text>
+    </View>
+  );
+}
+
 /**
  * Per-hole stacked bar around a zero axis:
  * negative components stack left of center, positives stack right.
@@ -174,6 +241,9 @@ export default function RatingInsightsScreen({ navigation }) {
         {/* Factor totals */}
         <FactorTotals factors={rating.factor_summary || {}} />
 
+        {/* Online ML refinement */}
+        <MLCard ml={rating.ml} />
+
         {/* Per-hole stacked chart */}
         <View style={s.card}>
           <Text style={s.cardTitle}>PER-HOLE FACTOR IMPACT</Text>
@@ -252,6 +322,15 @@ const s = StyleSheet.create({
   },
   legendDot: { width: 8, height: 8, borderRadius: 4 },
   legendText: { ...FONTS.semibold, fontSize: 10, color: COLORS.gray300 },
+
+  mlStatsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
+  mlStat: { alignItems: 'center', flex: 1 },
+  mlStatValue: { ...FONTS.black, fontSize: 16, color: COLORS.green400 },
+  mlStatLabel: { ...FONTS.regular, fontSize: 8.5, color: COLORS.gray500, marginTop: 2, textAlign: 'center' },
+  mlAdjBlock: { marginBottom: 4 },
+  mlAdjRow: { flexDirection: 'row', alignItems: 'center', gap: 7, marginBottom: 6 },
+  mlAdjLabel: { ...FONTS.semibold, fontSize: 11, color: COLORS.gray300, flex: 1 },
+  mlAdjValue: { ...FONTS.bold, fontSize: 11 },
 
   totalRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 7 },
   totalLabel: { ...FONTS.semibold, fontSize: 10, color: COLORS.gray400, width: 56, textAlign: 'right' },
